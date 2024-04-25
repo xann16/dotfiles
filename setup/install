@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+BCK_ROOT="$HOME/.dotfiles-backup"
+if [ ! -d "$BCK_ROOT" ]; then
+  mkdir "$BCK_ROOT"
+  echo "Created backup directory: $BCK_ROOT"
+fi
+
+SRC_ROOT=$(pwd -P)
+
+# ================================= #
+#    Setup symlink for i3 config    #
+# ================================= #
+
+I3_SRC="$SRC_ROOT/i3"
+I3_BCK="$BCK_ROOT/i3"
+I3_DST="$HOME/.config/i3"
+
+if [ -d "$I3_DST" ]; then
+  if [ ! -L "$I3_DST" ]; then
+    mv "$I3_DST" "$I3_BCK" -f
+    echo "Moved directory to backup: $I3_DST -> $I3_BCK"
+  fi
+fi
+
+if [ ! -L "$I3_DST" ]; then
+  ln -s "$I3_SRC" "$I3_DST"
+  echo "Created symlink: $I3_DST -> $I3_SRC"
+fi
+
