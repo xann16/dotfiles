@@ -104,16 +104,16 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
+set $ws1 "1: Chrome"
+set $ws2 "2: Term"
+set $ws3 "3: Editor"
 set $ws4 "4"
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
+set $ws9 "9: Utils"
+set $ws10 "10: Fun"
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -182,3 +182,9 @@ bar {
 # Add keybinging for screen locking
 bindsym $mod+Shift+x exec i3lock
 
+# Autostart running in specific workspaces
+exec --no-startup-id i3-msg '$ws1; exec google-chrome'
+exec --no-startup-id i3-msg '$ws3; exec code'
+exec --no-startup-id i3-msg '$ws9; exec google-chrome'
+exec --no-startup-id i3-msg '$ws10; exec i3-sensible-terminal'
+exec --no-startup-id i3-msg '$ws2; exec i3-sensible-terminal'
