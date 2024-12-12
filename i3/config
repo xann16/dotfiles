@@ -183,7 +183,7 @@ bar {
 bindsym $mod+Shift+x exec i3lock
 
 # Setup wallpaper image using feh
-exec_always feh --bg-scale /home/user/.dotfiles/assets/wallpapers/vm-vortex-cpp.jpg
+exec_always feh --bg-fill /home/user/.dotfiles/assets/wallpapers/vortex.jpg
 
-# run picom compositor for nice fades and window transparency
-exec_always picom -f -i 0.75 --active-opacity 0.92 --daemon
+# run picom compositor to disable fades and setup window transparency
+exec_always --no-startup-id picom -b --inactive-opacity 0.75 --active-opacity 0.95 --fade-in-step=1 --fade-out-step=1 --fade-delta=0
