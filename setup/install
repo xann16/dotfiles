@@ -7,6 +7,42 @@ if [ ! -d "$BCK_ROOT" ]; then
 fi
 
 SRC_ROOT=$(pwd -P)
+CONTEXT=$1
+
+if [ ! "$CONTEXT" ]; then
+  echo "No context provided as a first parameter"
+  exit 1
+fi
+
+
+# ================#======== #
+#    Upload image assets    #
+# =================#======= #
+
+IMG_SRC="$SRC_ROOT/assets/wallpapers/$CONTEXT.jpg"
+IMG_DST_BASE="$HOME/Pictures"
+IMG_DST="$IMG_DST_BASE/wallpaper.jpg"
+
+if [ ! -d "$IMG_DST_BASE" ]; then
+  mkdir -p "$IMG_DST_BASE"
+fi
+
+yes | cp "$IMG_SRC" "$IMG_DST"
+echo "Copied: $IMG_SRC -> $IMG_DST"
+
+# ======================== #
+#    Upload font assets    #
+# ======================== #
+
+FNT_SRC="$SRC_ROOT/assets/fonts"
+FNT_DST="$HOME/.fonts"
+
+if [ ! -d "$FNT_DST" ]; then
+  mkdir -p "$FNT_DST"
+fi
+
+yes | cp $FNT_SRC/*.ttf "$FNT_DST/"
+echo "Copied all fonts: $FNT_SRC -> $FNT_DST"
 
 # ================================= #
 #    Setup symlink for i3 config    #
@@ -28,3 +64,22 @@ if [ ! -L "$I3_DST" ]; then
   echo "Created symlink: $I3_DST -> $I3_SRC"
 fi
 
+# ==================================== #
+#    Setup symlink for picom config    #
+# ==================================== #
+
+PICOM_SRC="$SRC_ROOT/picom"
+PICOM_BCK="$BCK_ROOT/picom"
+PICOM_DST="$HOME/.config/picom"
+
+if [ -d "$PICOM_DST" ]; then
+  if [ ! -L "$PICOM_DST" ]; then
+    mv "$PICOM_DST" "$PICOM_BCK" -f
+    echo "Moved directory to backup: $PICOM_DST -> $PICOM_BCK"
+  fi
+fi
+
+if [ ! -L "$PICOM_DST" ]; then
+  ln -s "$PICOM_SRC" "$PICOM_DST"
+  echo "Created symlink: $PICOM_DST -> $PICOM_SRC"
+fi
