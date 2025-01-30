@@ -176,10 +176,16 @@ mode "resize" {
 
 bindsym $mod+s mode "resize"
 
-# Start i3bar to display a workspace bar (plus the system information i3status
+# Start i3bar to display a workspace bar (plus the system information using bumblebee-status
 # finds out, if available)
 bar {
-        status_command i3status
+	font pango:Inconsolata 10
+	position bottom
+	tray_output none
+	status_command ~/.local/bin/bumblebee-status \
+                -m disk memory cpu pasink battery date time \
+                -p time.format="%H:%M" date.format="%Y-%m-%d" \
+                -t moonlight-powerline
 }
 
 # Add keybinging for screen locking
