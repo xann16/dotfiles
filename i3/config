@@ -216,6 +216,11 @@ client.placeholder      #333333 #333333 #CCCCCC #000000   #333333
 
 client.background       #FFFFFF
 
+hide_edge_borders both
+
+# when upgrade to i3 4.22 is available uncomment below line
+# smart_borders on
+
 # Add keybinging for screen locking
 bindsym $mod+Shift+l exec i3lock -c 180018
 
