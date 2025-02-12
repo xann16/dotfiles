@@ -44,6 +44,22 @@ fi
 yes | cp $FNT_SRC/*.ttf "$FNT_DST/"
 echo "Copied all fonts: $FNT_SRC -> $FNT_DST"
 
+# ========================== #
+#    Upload script assets    #
+# ========================== #
+
+SCRIPT_SRC="$SRC_ROOT/assets/scripts"
+SCRIPT_DST="$HOME/.scripts"
+
+if [ ! -d "$SCRIPT_DST" ]; then
+  mkdir -p "$SCRIPT_DST"
+fi
+
+yes | cp $SCRIPT_SRC/* "$SCRIPT_DST/" -r
+echo "Copied all scripts: $SCRIPT_SRC -> $SCRIPT_DST"
+
+chmod 775 $SCRIPT_DST/urxvt/perl/*
+
 # ================================= #
 #    Setup symlink for i3 config    #
 # ================================= #
@@ -82,4 +98,27 @@ fi
 if [ ! -L "$PICOM_DST" ]; then
   ln -s "$PICOM_SRC" "$PICOM_DST"
   echo "Created symlink: $PICOM_DST -> $PICOM_SRC"
+fi
+
+# ==================================== #
+#    Setup symlink for urxvt config    #
+# ==================================== #
+
+URXVT_SRC="$SRC_ROOT/urxvt/.Xresources"
+URXVT_BCK="$BCK_ROOT/.Xresources"
+URXVT_DST="$HOME/.Xresources"
+URXVT_DFT="$HOME/.Xdefault"
+
+if [ -f "$URXVT_DST" ]; then
+  if [ ! -L "$URXVT_DST" ]; then
+    mv "$URXVT_DST" "$URXVT_BCK"
+    echo "Moved file to backup: $URXVT_DST -> $URXVT_BCK"
+  fi
+fi
+
+if [ ! -L "$URXVT_DST" ]; then
+  ln -s "$URXVT_SRC" "$URXVT_DST"
+  echo "Created symlink: $URXVT_DST -> $URXVT_SRC"
+  ln -s "$URXVT_SRC" "$URXVT_DFT"
+  echo "Created symlink: $URXVT_DFT -> $URXVT_SRC"
 fi
