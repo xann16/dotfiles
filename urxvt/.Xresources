@@ -51,9 +51,8 @@ URxvt.urgentOnBell:    true
 
 !! EXTENSIONS AND CONFIG
 
-URxvt.perl-lib: /home/user/.scripts/urxvt/perl
+!URxvt.perl-lib: /home/user/.scripts/urxvt/perl
 URxvt.perl-ext-common: default,selection,font-size,clipboard,url-select,keyboard-select,close-gracefully
-!URxvt.perl-ext: clipboard,url-select,keyboard-select,close-gracefully
 
 URxvt.copyCommand:  xclip -i -selection clipboard
 URxvt.pasteCommand: xclip -o -selection clipboard

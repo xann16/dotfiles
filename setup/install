@@ -44,21 +44,21 @@ fi
 yes | cp $FNT_SRC/*.ttf "$FNT_DST/"
 echo "Copied all fonts: $FNT_SRC -> $FNT_DST"
 
-# ========================== #
-#    Upload script assets    #
-# ========================== #
+# =================================== #
+#    Upload script assets for urxvt   #
+# =================================== #
 
-SCRIPT_SRC="$SRC_ROOT/assets/scripts"
-SCRIPT_DST="$HOME/.scripts"
+URXVT_SCRIPT_SRC="$SRC_ROOT/assets/scripts/urxvt/perl"
+URXVT_SCRIPT_DST="$HOME/.urxvt/ext"
 
-if [ ! -d "$SCRIPT_DST" ]; then
-  mkdir -p "$SCRIPT_DST"
+if [ ! -d "$URXVT_SCRIPT_DST" ]; then
+  mkdir -p "$URXVT_SCRIPT_DST"
 fi
 
-yes | cp $SCRIPT_SRC/* "$SCRIPT_DST/" -r
-echo "Copied all scripts: $SCRIPT_SRC -> $SCRIPT_DST"
+yes | cp $URXVT_SCRIPT_SRC/* "$URXVT_SCRIPT_DST/"
+echo "Copied all urxvt perl extension scripts: $URXVT_SCRIPT_SRC -> $URXVT_SCRIPT_DST"
 
-chmod 775 $SCRIPT_DST/urxvt/perl/*
+chmod 775 $URXVT_SCRIPT_DST/*
 
 # ================================= #
 #    Setup symlink for i3 config    #
