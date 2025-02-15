@@ -122,3 +122,23 @@ if [ ! -L "$URXVT_DST" ]; then
   ln -s "$URXVT_SRC" "$URXVT_DFT"
   echo "Created symlink: $URXVT_DFT -> $URXVT_SRC"
 fi
+
+# =================================== #
+#    Setup symlink for tmux config    #
+# =================================== #
+
+TMUX_SRC="$SRC_ROOT/tmux"
+TMUX_BCK="$BCK_ROOT/tmux"
+TMUX_DST="$HOME/.config/tmux"
+
+if [ -d "$TMUX_DST" ]; then
+  if [ ! -L "$TMUX_DST" ]; then
+    mv "$TMUX_DST" "$TMUX_BCK" -f
+    echo "Moved directory to backup: $TMUX_DST -> $TMUX_BCK"
+  fi
+fi
+
+if [ ! -L "$TMUX_DST" ]; then
+  ln -s "$TMUX_SRC" "$TMUX_DST"
+  echo "Created symlink: $TMUX_DST -> $TMUX_SRC"
+fi

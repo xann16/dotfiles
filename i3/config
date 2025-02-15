@@ -191,7 +191,7 @@ bindsym $mod+s mode "resize"
 # finds out, if available)
 bar {
 	font pango:Inconsolata 10
-	position bottom
+	position top
 	tray_output none
 	status_command ~/.local/bin/bumblebee-status \
                 -m disk memory cpu pasink battery date time \

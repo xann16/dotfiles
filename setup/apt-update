@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
-sudo apt-get update
-sudo apt-get upgrade -y
+sudo apt update
+sudo apt upgrade -y
 
-sudo apt-get install i3 i3lock xautolock feh picom python3 fonts-font-awesome fonts-powerline -y
-sudo apt-get install rxvt-unicode
+sudo apt install i3 i3lock xautolock feh picom python3 fonts-font-awesome fonts-powerline rxvt-unicode -y
+sudo apt install tmux git
 
 pip install --user bumblebee-status
+
+if [ ! -d $HOME/.tmux/plugins/tpm ]; then
+    git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
+fi

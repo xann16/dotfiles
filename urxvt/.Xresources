@@ -42,17 +42,19 @@ URxvt.boldItalicFont: xft:MesloLGS NF:style=Bold Italic:antialias=true:size=11:m
 
 !! OTHER OPTIONS
 
-URxvt.saveLines:       20000
-URxvt.intensityStyles: false
-URxvt.scrollstyle:     plain
-URxvt.scrollBar_right: true
-URxvt.urgentOnBell:    true
+URxvt.saveLines:        20000
+URxvt.intensityStyles:  false
+URxvt.urgentOnBell:     true
+
+URxvt.scrollBar:        false
+!URxvt.scrollstyle:     plain
+!URxvt.scrollBar_right: true
 
 
 !! EXTENSIONS AND CONFIG
 
 !URxvt.perl-lib: /home/user/.scripts/urxvt/perl
-URxvt.perl-ext-common: default,selection,font-size,clipboard,url-select,keyboard-select,close-gracefully
+URxvt.perl-ext-common: default,selection,font-size,clipboard,url-select,keyboard-select
 
 URxvt.copyCommand:  xclip -i -selection clipboard
 URxvt.pasteCommand: xclip -o -selection clipboard
