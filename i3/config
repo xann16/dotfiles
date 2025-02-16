@@ -220,6 +220,7 @@ client.placeholder      #333333 #333333 #CCCCCC #000000   #333333
 client.background       #FFFFFF
 
 hide_edge_borders both
+for_window [class="URxvt"] border pixel 0
 
 # when upgrade to i3 4.22 is available uncomment below line
 # smart_borders on
