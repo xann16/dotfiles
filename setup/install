@@ -44,6 +44,26 @@ fi
 yes | cp $FNT_SRC/*.ttf "$FNT_DST/"
 echo "Copied all fonts: $FNT_SRC -> $FNT_DST"
 
+# ===================================== #
+#    Setup symlink for script assets    #
+# ===================================== #
+
+SCRIPT_SRC="$SRC_ROOT/assets/scripts"
+SCRIPT_BCK="$BCK_ROOT/scripts"
+SCRIPT_DST="$HOME/.scripts"
+
+if [ -d "$SCRIPT_DST" ]; then
+  if [ ! -L "$SCRIPT_DST" ]; then
+    mv "$SCRIPT_DST" "$SCRIPT_BCK" -f
+    echo "Moved directory to backup: $SCRIPT_DST -> $SCRIPT_BCK"
+  fi
+fi
+
+if [ ! -L "$SCRIPT_DST" ]; then
+  ln -s "$SCRIPT_SRC" "$SCRIPT_DST"
+  echo "Created symlink: $SCRIPT_DST -> $SCRIPT_SRC"
+fi
+
 # =================================== #
 #    Upload script assets for urxvt   #
 # =================================== #
