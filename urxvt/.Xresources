@@ -54,22 +54,14 @@ URxvt.scrollBar:        false
 !! EXTENSIONS AND CONFIG
 
 !URxvt.perl-lib: /home/user/.scripts/urxvt/perl
-URxvt.perl-ext-common: default,selection,font-size,clipboard,url-select,keyboard-select
+URxvt.perl-ext-common: default,selection,font-size,clipboard
 
 URxvt.copyCommand:  xclip -i -selection clipboard
 URxvt.pasteCommand: xclip -o -selection clipboard
 
-URxvt.url-select.launcher:   google-chrome
-URxvt.underlineURLs:  true
-URxvt.matcher.button: 1
-
 URxvt.keysym.M-c:      perl:clipboard:copy
 URxvt.keysym.M-v:      perl:clipboard:paste
 URxvt.keysym.M-C-v:    perl:clipboard:paste_escaped
-URxvt.keysym.M-Escape: perl:keyboard-select:activate
-URxvt.keysym.M-s:      perl:keyboard-select:search
-URxvt.keysym.M-u:      perl:url-select:select_next
-
 
 !! KEYBINDINGS - COMMON NAVIGATION
 

@@ -4,7 +4,7 @@ sudo apt update
 sudo apt upgrade -y
 
 sudo apt install i3 i3lock xautolock feh picom python3 fonts-font-awesome fonts-powerline rxvt-unicode -y
-sudo apt install tmux git
+sudo apt install tmux git fzf
 
 pip install --user bumblebee-status
 
