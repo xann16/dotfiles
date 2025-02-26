@@ -64,22 +64,6 @@ if [ ! -L "$SCRIPT_DST" ]; then
   echo "Created symlink: $SCRIPT_DST -> $SCRIPT_SRC"
 fi
 
-# =================================== #
-#    Upload script assets for urxvt   #
-# =================================== #
-
-URXVT_SCRIPT_SRC="$SRC_ROOT/assets/scripts/urxvt/perl"
-URXVT_SCRIPT_DST="$HOME/.urxvt/ext"
-
-if [ ! -d "$URXVT_SCRIPT_DST" ]; then
-  mkdir -p "$URXVT_SCRIPT_DST"
-fi
-
-yes | cp $URXVT_SCRIPT_SRC/* "$URXVT_SCRIPT_DST/"
-echo "Copied all urxvt perl extension scripts: $URXVT_SCRIPT_SRC -> $URXVT_SCRIPT_DST"
-
-chmod 775 $URXVT_SCRIPT_DST/*
-
 # ================================= #
 #    Setup symlink for i3 config    #
 # ================================= #
@@ -121,26 +105,29 @@ if [ ! -L "$PICOM_DST" ]; then
 fi
 
 # ==================================== #
-#    Setup symlink for urxvt config    #
+#    Setup symlink for kitty config    #
 # ==================================== #
 
-URXVT_SRC="$SRC_ROOT/urxvt/.Xresources"
-URXVT_BCK="$BCK_ROOT/.Xresources"
-URXVT_DST="$HOME/.Xresources"
-URXVT_DFT="$HOME/.Xdefault"
+KITTY_SRC="$SRC_ROOT/kitty"
+KITTY_BCK="$BCK_ROOT/kitty"
+KITTY_DST="$HOME/.config/kitty"
 
-if [ -f "$URXVT_DST" ]; then
-  if [ ! -L "$URXVT_DST" ]; then
-    mv "$URXVT_DST" "$URXVT_BCK"
-    echo "Moved file to backup: $URXVT_DST -> $URXVT_BCK"
+echo $KITTY_SRC
+echo $KITTY_BCK
+echo $KITTY_DST
+
+if [ -d "$KITTY_DST" ]; then
+  echo "$KITTY_DST exists"
+  if [ ! -L "$KITTY_DST" ]; then
+    echo "$KITTY_DST is not a link"
+    mv "$KITTY_DST" "$KITTY_BCK"
+    echo "Moved file to backup: $KITTY_DST -> $KITTY_BCK"
   fi
 fi
 
-if [ ! -L "$URXVT_DST" ]; then
-  ln -s "$URXVT_SRC" "$URXVT_DST"
-  echo "Created symlink: $URXVT_DST -> $URXVT_SRC"
-  ln -s "$URXVT_SRC" "$URXVT_DFT"
-  echo "Created symlink: $URXVT_DFT -> $URXVT_SRC"
+if [ ! -L "$KITTY_DST" ]; then
+  ln -s "$KITTY_SRC" "$KITTY_DST"
+  echo "Created symlink: $KITTY_DST -> $KITTY_SRC"
 fi
 
 # =================================== #

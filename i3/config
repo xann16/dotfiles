@@ -38,12 +38,9 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# ensure X resources are updated
-exec_always xrdb ~/.Xresources
-
 # start a terminal (by default with default tmux session)
-bindsym $mod+Return exec urxvt -e bash -c "(tmux has-session -t bench && tmux attach-session -t bench) || tmux new-session -s bench -n scratchpad"
-bindsym $mod+Shift+Return exec urxvt
+bindsym $mod+Return exec kitty --session $HOME/.config/kitty/sessions/tmux-ws.conf
+bindsym $mod+Shift+Return exec kitty
 
 # kill focused window
 bindsym $mod+q kill
@@ -221,7 +218,7 @@ client.placeholder      #333333 #333333 #CCCCCC #000000   #333333
 client.background       #FFFFFF
 
 hide_edge_borders both
-for_window [class="URxvt"] border pixel 0
+for_window [class="kitty"] border pixel 0
 
 # when upgrade to i3 4.22 is available uncomment below line
 # smart_borders on
