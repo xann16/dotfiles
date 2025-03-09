@@ -149,3 +149,24 @@ if [ ! -L "$TMUX_DST" ]; then
   ln -s "$TMUX_SRC" "$TMUX_DST"
   echo "Created symlink: $TMUX_DST -> $TMUX_SRC"
 fi
+
+# ================================== #
+#    Setup symlink for zsh config    #
+# ================================== #
+
+ZSHRC_SRC="$SRC_ROOT/zsh/.zshrc"
+ZSHRC_BCK="$BCK_ROOT/zsh/.zshrc"
+ZSHRC_DST="$HOME/.zshrc"
+
+if [ -f "$ZSHRC_DST" ]; then
+  if [ ! -L "$ZSHRC_DST" ]; then
+    mkdir -p "$BCK_ROOT/zsh"
+    mv "$ZSHRC_DST" "$ZSHRC_BCK" -f
+    echo "Moved file to backup: $ZSHRC_DST -> $ZSHRC_BCK"
+  fi
+fi
+
+if [ ! -L "$ZSHRC_DST" ]; then
+  ln -s "$ZSHRC_SRC" "$ZSHRC_DST"
+  echo "Created symlink: $ZSHRC_DST -> $ZSHRC_SRC"
+fi

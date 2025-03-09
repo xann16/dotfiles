@@ -5,9 +5,13 @@ sudo apt upgrade -y
 
 sudo apt install i3 i3lock xautolock feh picom python3 fonts-font-awesome fonts-powerline kitty -y
 sudo apt install tmux git fzf -y
+sudo apt install zsh -y
 
 pip install --user bumblebee-status
 
 if [ ! -d $HOME/.tmux/plugins/tpm ]; then
     git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 fi
+
+# change default shell
+sudo chsh -s $(which zsh)
