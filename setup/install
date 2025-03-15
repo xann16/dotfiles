@@ -112,14 +112,8 @@ KITTY_SRC="$SRC_ROOT/kitty"
 KITTY_BCK="$BCK_ROOT/kitty"
 KITTY_DST="$HOME/.config/kitty"
 
-echo $KITTY_SRC
-echo $KITTY_BCK
-echo $KITTY_DST
-
 if [ -d "$KITTY_DST" ]; then
-  echo "$KITTY_DST exists"
   if [ ! -L "$KITTY_DST" ]; then
-    echo "$KITTY_DST is not a link"
     mv "$KITTY_DST" "$KITTY_BCK"
     echo "Moved file to backup: $KITTY_DST -> $KITTY_BCK"
   fi
@@ -169,4 +163,25 @@ fi
 if [ ! -L "$ZSHRC_DST" ]; then
   ln -s "$ZSHRC_SRC" "$ZSHRC_DST"
   echo "Created symlink: $ZSHRC_DST -> $ZSHRC_SRC"
+fi
+
+# ============================================== #
+#    Setup symlink for p10k zsh plugin config    #
+# ============================================== #
+
+P10K_SRC="$SRC_ROOT/zsh/.p10k.zsh"
+P10K_BCK="$BCK_ROOT/zsh/.p10k.zsh"
+P10K_DST="$HOME/.p10k.zsh"
+
+if [ -f "$P10K_DST" ]; then
+  if [ ! -L "$P10K_DST" ]; then
+    mkdir -p "$BCK_ROOT/zsh"
+    mv "$P10K_DST" "$P10K_BCK" -f
+    echo "Moved file to backup: $P10K_DST -> $P10K_BCK"
+  fi
+fi
+
+if [ ! -L "$P10K_DST" ]; then
+  ln -s "$P10K_SRC" "$P10K_DST"
+  echo "Created symlink: $P10K_DST -> $P10K_SRC"
 fi

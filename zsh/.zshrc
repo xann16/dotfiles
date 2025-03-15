@@ -1,3 +1,43 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Home directory for zinit plugin manager
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit"
+
+# If zinit is not cloned, do so
+if [ ! -d "$ZINIT_HOME" ]; then
+    mkdir -p "$ZINIT_HOME"
+    git clone https://github.com/zdharma-continuum/zinit "$ZINIT_HOME"
+fi
+
+# Source initialization script for zinit
+source "$ZINIT_HOME/zinit.zsh"
+
+# Adding zsh plugins via zinit
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-autosuggestions
+zinit light Aloxaf/fzf-tab
+
+# Adding extra snippets (extra plugins from Oh My Zsh)
+zinit snippet OMZP::git
+
+# Replay cached completions (as advised by zinit docs)
+zinit cdreplay -q
+
+# Load completions
+autoload -U compinit && compinit
+
+# Enabling shell integration with fzf (to be updated for newer fzf versions)
+# eval "$(fzf --zsh)"      # <- does not work with fzf v0.29
+source /usr/share/doc/fzf/examples/completion.zsh
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+
 # Setup history size and destination
 HISTFILE="$HOME/.zhistory"
 HISTSIZE=100000
@@ -24,9 +64,15 @@ unsetopt beep
 # enable vim mode
 bindkey -v
 
+# Extra bindings for history search
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward
+
 # extra completion options
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 
 # extra PATH additions
 export PATH="/home/user/.local/bin:$PATH"
@@ -66,3 +112,5 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
