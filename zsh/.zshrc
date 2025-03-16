@@ -5,6 +5,15 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Basic environment variables setup
+export VISUAL=nvim
+export EDITOR=nvim
+export BROWSER=google-chrome # to be replaced by firefox (or sth else)
+
+export REPOS=$HOME/repos
+export DOTFILES=$HOME/.dotfiles
+
+
 # Home directory for zinit plugin manager
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit"
 
@@ -23,6 +32,8 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
+zinit light MichaelAquilina/zsh-auto-notify
+zinit light MichaelAquilina/zsh-you-should-use
 
 # Adding extra snippets (extra plugins from Oh My Zsh)
 zinit snippet OMZP::git
@@ -64,6 +75,9 @@ unsetopt beep
 # enable vim mode
 bindkey -v
 
+# Jump to editor (vim) to edit command line
+bindkey '^e' edit-command-line
+
 # Extra bindings for history search
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
@@ -86,6 +100,8 @@ alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
 alias ls='ls --color=auto'
 alias ll='ls -lah'
+alias lt='ls -lath'
+alias lx='exa -laghm@ --icons --color=always'
 
 # --- OTHER TOOLS CUSTOM SETUP ---
 
