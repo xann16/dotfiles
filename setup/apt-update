@@ -14,5 +14,6 @@ if [ ! -d $HOME/.tmux/plugins/tpm ]; then
     git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 fi
 
-# change default shell
+# change default shell for root and current user
 sudo chsh -s $(which zsh)
+chsh -s $(which zsh)
