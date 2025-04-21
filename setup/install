@@ -185,3 +185,24 @@ if [ ! -L "$P10K_DST" ]; then
   ln -s "$P10K_SRC" "$P10K_DST"
   echo "Created symlink: $P10K_DST -> $P10K_SRC"
 fi
+
+# =================================== #
+#    Setup symlink for zsh aliases    #
+# =================================== #
+
+ZALIASES_SRC="$SRC_ROOT/zsh/.zaliases"
+ZALIASES_BCK="$BCK_ROOT/zsh/.zaliases"
+ZALIASES_DST="$HOME/.zaliases"
+
+if [ -f "$ZALIASES_DST" ]; then
+  if [ ! -L "$ZALIASES_DST" ]; then
+    mkdir -p "$BCK_ROOT/zsh"
+    mv "$ZALIASES_DST" "$ZALIASES_BCK" -f
+    echo "Moved file to backup: $ZALIASES_DST -> $ZALIASES_BCK"
+  fi
+fi
+
+if [ ! -L "$ZALIASES_DST" ]; then
+  ln -s "$ZALIASES_SRC" "$ZALIASES_DST"
+  echo "Created symlink: $ZALIASES_DST -> $ZALIASES_SRC"
+fi

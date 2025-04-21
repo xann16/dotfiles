@@ -8,8 +8,9 @@ fi
 # Basic environment variables setup
 export VISUAL=nvim
 export EDITOR=nvim
-export BROWSER=google-chrome # to be replaced by firefox (or sth else)
+export BROWSER=firefox
 
+export XDG_CONFIG_HOME=$HOME/.config
 export REPOS=$HOME/repos
 export DOTFILES=$HOME/.dotfiles
 
@@ -33,7 +34,6 @@ zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
 zinit light MichaelAquilina/zsh-auto-notify
-zinit light MichaelAquilina/zsh-you-should-use
 
 # Adding extra snippets (extra plugins from Oh My Zsh)
 zinit snippet OMZP::git
@@ -48,6 +48,19 @@ autoload -U compinit && compinit
 # eval "$(fzf --zsh)"      # <- does not work with fzf v0.29
 source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
+
+bindkey '^R' fzf-history-widget  # Ctrl-R to fuzzy search through history
+
+# If 'cd' is used without arguments use fzf to search through file hierarchy
+#   Source: https://kaliex.co/supercharge-your-zsh-terminal-with-fzf-a-simple-guide/
+function cd() {
+    if [[ $# -gt 0 ]]; then
+        builtin cd "$@"
+    else
+        local dir
+        dir=$(find ${1:-.} -path '*/\.*' -prune -o -type d -print 2> /dev/null | fzf +m) && builtin cd "$dir"
+    fi
+}
 
 # Setup history size and destination
 HISTFILE="$HOME/.zhistory"
@@ -66,17 +79,16 @@ setopt hist_find_no_dups
 setopt extendedglob
 setopt nomatch
 setopt globdots
+setopt interactive_comments
 
 # setting / unsetting of other options
 setopt notify correctall nomatch globdots
 setopt correctall
+setopt auto_cd
 unsetopt beep
 
 # enable vim mode
 bindkey -v
-
-# Jump to editor (vim) to edit command line
-bindkey '^e' edit-command-line
 
 # Extra bindings for history search
 bindkey '^p' history-search-backward
@@ -92,16 +104,25 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 export PATH="/home/user/.local/bin:$PATH"
 
 
-# --- GENERAL ALIASES ---
+# ALIASES
 
-alias clear='TERM=xterm-kitty /usr/bin/clear'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias grep='grep --color=auto'
-alias ls='ls --color=auto'
-alias ll='ls -lah'
-alias lt='ls -lath'
-alias lx='exa -laghm@ --icons --color=always'
+# Automatically Expanding Global Aliases (Space key to expand)
+#   references: http://blog.patshead.com/2012/11/automatically-expaning-zsh-global-aliases---simplified.html
+globalias() {
+    if [[ $LBUFFER =~ ' [a-zA-Z0-9]+$' ]]; then
+        zle _expand_alias
+        zle expand-word
+    fi
+    zle self-insert
+}
+
+zle -N globalias
+bindkey " " globalias                 # space key to expand globalalias
+# bindkey "^ " magic-space            # control-space to bypass completion
+bindkey "^[[Z" magic-space            # shift-tab to bypass completion
+bindkey -M isearch " " magic-space    # normal space during searches
+
+source $HOME/.zaliases
 
 # --- OTHER TOOLS CUSTOM SETUP ---
 
