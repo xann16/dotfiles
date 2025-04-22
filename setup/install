@@ -144,6 +144,29 @@ if [ ! -L "$TMUX_DST" ]; then
   echo "Created symlink: $TMUX_DST -> $TMUX_SRC"
 fi
 
+# ============================================== #
+#    Setup symlink for git config (+ includes)   #
+# ============================================== #
+
+GIT_SRC="$SRC_ROOT/git"
+GIT_BCK="$BCK_ROOT/git"
+GIT_DST="$HOME/.config/git"
+
+if [ -d "$GIT_DST" ]; then
+  if [ ! -L "$GIT_DST" ]; then
+    mv "$GIT_DST" "$GIT_BCK" -f
+    echo "Moved directory to backup: $GIT_DST -> $GIT_BCK"
+  fi
+fi
+
+if [ ! -L "$GIT_DST" ]; then
+  ln -s "$GIT_SRC" "$GIT_DST"
+  echo "Created symlink: $GIT_DST -> $GIT_SRC"
+fi
+
+git config --global --add include.path ~/.config/git/personal.gitconfig
+git config --global --add include.path ~/.config/git/delta.gitconfig
+
 # ================================== #
 #    Setup symlink for zsh config    #
 # ================================== #

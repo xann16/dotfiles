@@ -4,11 +4,17 @@ sudo apt update
 sudo apt upgrade -y
 
 sudo apt install i3 i3lock xautolock feh picom python3 fonts-font-awesome fonts-powerline kitty -y
-sudo apt install tmux git fzf -y
+sudo apt install tmux git fzf xclip xsel -y
 sudo apt install zsh zsh-autosuggestions -y
-sudo apt install exa -y
+sudo apt install exa bat ripgrep -y
 
 pip install --user bumblebee-status
+
+# manual install of git-delta via dpkg
+GIT_DELTA_FILENAME=git-delta_0.18.2_amd64.deb
+wget https://github.com/dandavison/delta/releases/download/0.18.2/$GIT_DELTA_FILENAME
+sudo dpkg -i $GIT_DELTA_FILENAME
+rm $GIT_DELTA_FILENAME
 
 if [ ! -d $HOME/.tmux/plugins/tpm ]; then
     git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm

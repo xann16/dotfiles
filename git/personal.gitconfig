@@ -1,0 +1,6 @@
+[core]
+    editor = code --wait
+
+[user]
+    name = Maciej Manna
+    email = maciejmanna@gmail.com

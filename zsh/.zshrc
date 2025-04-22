@@ -35,6 +35,7 @@ zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
 zinit light MichaelAquilina/zsh-auto-notify
 zinit light mrjohannchang/zsh-interactive-cd
+zinit light fdellwing/zsh-bat
 
 # Adding extra snippets (extra plugins from Oh My Zsh)
 zinit snippet OMZP::git

@@ -8,7 +8,7 @@ alias ls='ls --color=auto'
 alias ll='ls -lah'
 alias lt='ls -lath'
 alias lx='exa -laghm@ --icons --color=always'
-
+alias bat='batcat'
 
 # some proposals for standard aliases - TODO
 
@@ -63,7 +63,10 @@ alias lx='exa -laghm@ --icons --color=always'
 alias -g C='| wc -l'
 alias -g H='| head'
 alias -g T='| tail'
-alias -g G='| grep'
+alias -g GG='| grep'
+alias -g G='| rg'
+alias -g GJ='| rg --json'
+alias -g D='| delta'
 #alias -g LL="2>&1 | less"
 #alias -g CA="2>&1 | cat -A"
 #alias -g NE="2> /dev/null"
