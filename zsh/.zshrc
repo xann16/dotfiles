@@ -38,7 +38,7 @@ zinit light mrjohannchang/zsh-interactive-cd
 zinit light fdellwing/zsh-bat
 
 # Adding extra snippets (extra plugins from Oh My Zsh)
-zinit snippet OMZP::git
+zinit snippet OMZP::pip
 
 # Replay cached completions (as advised by zinit docs)
 zinit cdreplay -q

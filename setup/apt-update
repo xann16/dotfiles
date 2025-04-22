@@ -6,7 +6,7 @@ sudo apt upgrade -y
 sudo apt install i3 i3lock xautolock feh picom python3 fonts-font-awesome fonts-powerline kitty -y
 sudo apt install tmux git fzf xclip xsel -y
 sudo apt install zsh zsh-autosuggestions -y
-sudo apt install exa bat ripgrep -y
+sudo apt install exa bat ripgrep gh -y
 
 pip install --user bumblebee-status
 
