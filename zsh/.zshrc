@@ -34,6 +34,7 @@ zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
 zinit light MichaelAquilina/zsh-auto-notify
+zinit light mrjohannchang/zsh-interactive-cd
 
 # Adding extra snippets (extra plugins from Oh My Zsh)
 zinit snippet OMZP::git
@@ -123,6 +124,42 @@ bindkey "^[[Z" magic-space            # shift-tab to bypass completion
 bindkey -M isearch " " magic-space    # normal space during searches
 
 source $HOME/.zaliases
+
+
+# EXTRA CLIPBOARD COPY TOOLS
+#   taken from Oh My Zsh plugins - see:
+#     - https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/copybuffer/copybuffer.plugin.zsh
+#     - https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/copyfile/copyfile.plugin.zsh
+#     - https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/copypath/copypath.plugin.zsh
+
+# Copyies the active line from the command line buffer onto the system clipboard
+xxbuf () {
+  if builtin which xclip &>/dev/null; then
+    printf "%s" "$BUFFER" | xclip -selection clipboard
+  else
+    zle -M "xclip not found"
+  fi
+}
+zle -N xxbuf
+bindkey '^O' xxbuf
+
+# Copies the contents of a given file to the system or X Windows clipboard
+function xxfile {
+  emulate -L zsh
+  xclip -selection clipboard $1
+}
+
+# Copies the path of given directory or file to the system or X Windows clipboard
+#   (copies current directory if no parameter is provided)
+function xxpath {
+  # If no argument passed, use current directory
+  local file="${1:-.}"
+  # If argument is not an absolute path, prepend $PWD
+  [[ $file = /* ]] || file="$PWD/$file"
+  # Copy the absolute path without resolving symlinks (if clipcopy fails, exit the function with an error)
+  print -n "${file:a}" | xclip -selection clipboard || return 1
+  echo ${(%):-"%B${file:a}%b copied to clipboard."}
+}
 
 # --- OTHER TOOLS CUSTOM SETUP ---
 
