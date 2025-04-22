@@ -5,8 +5,10 @@
     diffFilter = delta --color-only
 
 [delta]
-    navigate = true  # use n and N to move between diff sections
-    dark = true      # or light = true, or omit for auto-detection
+    navigate = true     # use n and N to move between diff sections
+    dark = true         # or light = true, or omit for auto-detection
+    line-numbers = true # display line numbers on the side
+    hyperlinks = true   # uses terminal hyperlinks where applicable
 
 [merge]
     conflictstyle = zdiff3
