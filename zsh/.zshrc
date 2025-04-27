@@ -14,7 +14,6 @@ export XDG_CONFIG_HOME=$HOME/.config
 export REPOS=$HOME/repos
 export DOTFILES=$HOME/.dotfiles
 
-
 # Home directory for zinit plugin manager
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit"
 
@@ -46,13 +45,6 @@ zinit cdreplay -q
 # Load completions
 autoload -U compinit && compinit
 
-# Enabling shell integration with fzf (to be updated for newer fzf versions)
-# eval "$(fzf --zsh)"      # <- does not work with fzf v0.29
-source /usr/share/doc/fzf/examples/completion.zsh
-source /usr/share/doc/fzf/examples/key-bindings.zsh
-
-bindkey '^R' fzf-history-widget  # Ctrl-R to fuzzy search through history
-
 # If 'cd' is used without arguments use fzf to search through file hierarchy
 #   Source: https://kaliex.co/supercharge-your-zsh-terminal-with-fzf-a-simple-guide/
 function cd() {
@@ -65,7 +57,12 @@ function cd() {
 }
 
 # Setup history size and destination
-HISTFILE="$HOME/.zhistory"
+if [[ -d $HOME/.config/zsh ]]; then
+    HISTFILE=$HOME/.config/zsh/history;
+else
+    HISTFILE=$HOME/.zhistory
+fi
+
 HISTSIZE=100000
 SAVEHIST=100000
 HISTDUP=erase
@@ -102,11 +99,14 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 
+# extra clipboard copy tools
+[[ ! -f $HOME/.config/zsh/cliptools.zsh ]] || source $HOME/.config/zsh/cliptools.zsh
+
 # extra PATH additions
 export PATH="/home/user/.local/bin:$PATH"
 
 
-# ALIASES
+# --- ALIASES ---
 
 # Automatically Expanding Global Aliases (Space key to expand)
 #   references: http://blog.patshead.com/2012/11/automatically-expaning-zsh-global-aliases---simplified.html
@@ -124,45 +124,13 @@ bindkey " " globalias                 # space key to expand globalalias
 bindkey "^[[Z" magic-space            # shift-tab to bypass completion
 bindkey -M isearch " " magic-space    # normal space during searches
 
-source $HOME/.zaliases
+[[ ! -f $HOME/.config/zsh/aliases.zsh ]] || source $HOME/.config/zsh/aliases.zsh
 
-
-# EXTRA CLIPBOARD COPY TOOLS
-#   taken from Oh My Zsh plugins - see:
-#     - https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/copybuffer/copybuffer.plugin.zsh
-#     - https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/copyfile/copyfile.plugin.zsh
-#     - https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/copypath/copypath.plugin.zsh
-
-# Copyies the active line from the command line buffer onto the system clipboard
-xxbuf () {
-  if builtin which xclip &>/dev/null; then
-    printf "%s" "$BUFFER" | xclip -selection clipboard
-  else
-    zle -M "xclip not found"
-  fi
-}
-zle -N xxbuf
-bindkey '^O' xxbuf
-
-# Copies the contents of a given file to the system or X Windows clipboard
-function xxfile {
-  emulate -L zsh
-  xclip -selection clipboard $1
-}
-
-# Copies the path of given directory or file to the system or X Windows clipboard
-#   (copies current directory if no parameter is provided)
-function xxpath {
-  # If no argument passed, use current directory
-  local file="${1:-.}"
-  # If argument is not an absolute path, prepend $PWD
-  [[ $file = /* ]] || file="$PWD/$file"
-  # Copy the absolute path without resolving symlinks (if clipcopy fails, exit the function with an error)
-  print -n "${file:a}" | xclip -selection clipboard || return 1
-  echo ${(%):-"%B${file:a}%b copied to clipboard."}
-}
 
 # --- OTHER TOOLS CUSTOM SETUP ---
+
+# bat
+export BAT_THEME=DarkNeon
 
 # tmuxifier
 export PATH="$HOME/.config/tmux/plugins/tmuxifier/bin:$PATH"
@@ -187,5 +155,26 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+
+# ----------------------------------------------------------------------
+
+# --- FZF INTEGRATION ---
+# Note: here at the end to ensure unbinging of Ctrl-G from vim mode to be used in fzf-git
+
+# fzf integration with zsh
+[[ ! -f $HOME/.config/fzf/fzf.zsh ]] || source $HOME/.config/fzf/fzf.zsh
+
+# fzf-git tool setup
+bindkey -r '^G'
+[[ ! -f $HOME/.config/zsh/fzf-git.zsh ]] || source $HOME/.config/zsh/fzf-git.zsh
+
+# extra preview for fzf widgets
+#   source: https://www.youtube.com/watch?v=mmqDYw9C30I
+FZF_CTRL_T_OPTS="--preview 'batcat -n --color=always --line-range :500 {}'"
+FZF_ALT_C_OPTS="--preview 'eza --tree --color=always --git {} | head -200'"
+
+# -----------------------------------------------------------------------
+
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f $HOME/.config/zsh/p10k.zsh ]] || source $HOME/.config/zsh/p10k.zsh

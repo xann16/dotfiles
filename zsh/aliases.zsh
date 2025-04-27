@@ -7,8 +7,12 @@ alias grep='grep --color=auto'
 alias ls='ls --color=auto'
 alias ll='ls -lah'
 alias lt='ls -lath'
-alias lx='exa -laghm@ --icons --color=always'
-alias bat='batcat'
+alias lz='eza -laghm@ --git --icons=always --color=always'
+alias lzt='eza --long --git --icons=always --color=always --no-filesize --no-time --no-user --no-permissions --tree --level=2'
+alias lztt='eza --long --git --icons=always --color=always --no-filesize --no-time --no-user --no-permissions --tree --level=3'
+alias lzttt='eza --long --git --icons=always --color=always --no-filesize --no-time --no-user --no-permissions --tree --level=4'
+alias lztx='eza --long --git --icons=always --color=always --no-filesize --no-time --no-user --no-permissions --tree'
+alias bat='batcat --color=always'
 
 # some proposals for standard aliases - TODO
 
