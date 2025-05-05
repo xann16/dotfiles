@@ -5,7 +5,7 @@ sudo apt upgrade -y
 
 sudo apt install i3 i3lock xautolock feh picom python3 fonts-font-awesome fonts-powerline kitty -y
 sudo apt install git gpg xclip xsel -y
-sudo apt install zsh zsh-autosuggestions tmux -y
+sudo apt install tmux zsh zsh-autosuggestions -y
 sudo apt install bat ripgrep gh -y
 
 pip install --user bumblebee-status
@@ -23,7 +23,7 @@ wget https://github.com/dandavison/delta/releases/download/0.18.2/$GIT_DELTA_FIL
 sudo dpkg -i $GIT_DELTA_FILENAME
 rm $GIT_DELTA_FILENAME
 
-#manual install of eza via apt
+# manual install of eza via apt
 sudo mkdir -p /etc/apt/keyrings
 wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
 echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
@@ -31,6 +31,7 @@ sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.lis
 sudo apt update
 sudo apt install -y eza
 
+# manual clone of tpm (plugin manager for tmux)
 if [ ! -d $HOME/.tmux/plugins/tpm ]; then
     git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 fi
