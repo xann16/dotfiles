@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [[ "$OSTYPE" == darwin* ]]; then
+    brew install uv
+else
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+fi
+
+# TODO: add -> uv tool install - for commonly used Python tooling
