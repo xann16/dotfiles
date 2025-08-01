@@ -129,6 +129,11 @@ bindkey -M isearch " " magic-space    # normal space during searches
 
 # --- OTHER TOOLS CUSTOM SETUP ---
 
+# brew shell completion (MacOS-only)
+if [[ "$OSTYPE" == darwin* ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 # bat
 export BAT_THEME=DarkNeon
 
