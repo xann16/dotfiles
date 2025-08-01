@@ -3,12 +3,33 @@
 sudo apt update
 sudo apt upgrade -y
 
-sudo apt install i3 i3lock xautolock feh picom python3 fonts-font-awesome fonts-powerline kitty -y
+sudo apt install i3 i3lock xautolock feh picom python3 kitty -y
 sudo apt install git gpg xclip xsel -y
 sudo apt install tmux zsh zsh-autosuggestions -y
 sudo apt install bat ripgrep gh -y
 
 pip install --user bumblebee-status
+
+# install Meslo nerd font from powerlevel10k-media repository
+if [[ "$OSTYPE" == darwin* ]]; then
+    TARGET_FONT_DIR=$HOME/Library/fonts
+else
+    TARGET_FONT_DIR=$HOME/.fonts
+fi
+
+P10KM_REPO_DIR=$HOME/.config/.temp/powerlevel10k-media
+if [[ -d P10KM_REPO_DIR ]]; then
+    rm $P10KM_REPO_DIR -rf
+fi
+if [[ ! -d TARGET_FONT_DIR ]]; then
+    mkdir $TARGET_FONT_DIR
+fi
+git clone --depth 1 https://github.com/romkatv/powerlevel10k-media $P10KM_REPO_DIR;
+yes | cp $P10KM_REPO_DIR/*.ttf $TARGET_FONT_DIR/
+rm $P10KM_REPO_DIR -rf
+
+# refresh font cache
+fc-cache -f
 
 # manual install of fzf
 FZF_SRC_DIR=$HOME/.config/fzf/.src

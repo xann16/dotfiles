@@ -188,7 +188,7 @@ bindsym $mod+s mode "resize"
 # Start i3bar to display a workspace bar (plus the system information using bumblebee-status
 # finds out, if available)
 bar {
-	font pango:Inconsolata 10
+	font pango:MesloLGS NF 10
 	position top
 	tray_output none
 	status_command ~/.local/bin/bumblebee-status \

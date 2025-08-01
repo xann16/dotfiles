@@ -11,4 +11,4 @@
     hyperlinks = true   # uses terminal hyperlinks where applicable
 
 [merge]
-    conflictstyle = zdiff3
+    conflictstyle = diff3

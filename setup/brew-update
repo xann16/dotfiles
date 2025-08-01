@@ -1,8 +1,6 @@
 #!/usr/bin/env zsh
 
 brew install python3
-brew install font-fontawesome
-# brew install fonts-powerline - install via clone
 brew install kitty
 brew install git gpg wget
 brew install xclip xsel
@@ -10,12 +8,26 @@ brew install tmux
 brew install zsh zsh-autosuggestions
 brew install bat ripgrep gh git-delta eza
 
-# manual install of powerline fonts
-FONTPL_SRC_DIR=$HOME/.config/font-powerline/.src
-if [[ ! -d $FONTPL_SRC_DIR ]]; then
-    git clone --depth 1 https://github.com/powerline/fonts.git $FONTPL_SRC_DIR;
-    $FONTPL_SRC_DIR/install.sh;
+# install Meslo nerd font from powerlevel10k-media repository
+if [[ "$OSTYPE" == darwin* ]]; then
+    TARGET_FONT_DIR=$HOME/Library/fonts
+else
+    TARGET_FONT_DIR=$HOME/.fonts
 fi
+
+P10KM_REPO_DIR=$HOME/.config/.temp/powerlevel10k-media
+if [[ -d P10KM_REPO_DIR ]]; then
+    rm -rf $P10KM_REPO_DIR
+fi
+if [[ ! -d TARGET_FONT_DIR ]]; then
+    mkdir $TARGET_FONT_DIR
+fi
+git clone --depth 1 https://github.com/romkatv/powerlevel10k-media $P10KM_REPO_DIR;
+yes | cp $P10KM_REPO_DIR/*.ttf $TARGET_FONT_DIR/
+rm -rf $P10KM_REPO_DIR
+
+# refresh font cache
+fc-cache -f
 
 # manual install of fzf
 # TODO - what about XDG_... (check)
@@ -29,6 +41,3 @@ fi
 if [ ! -d $HOME/.tmux/plugins/tpm ]; then
     git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 fi
-
-# refresh font cache
-fc-cache -f

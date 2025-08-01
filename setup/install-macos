@@ -13,20 +13,6 @@ fi
 
 SRC_ROOT=$(pwd -P)
 
-# ======================== #
-#    Upload font assets    #
-# ======================== #
-
-FNT_SRC="$SRC_ROOT/assets/fonts"
-FNT_DST="$HOME/Library/Fonts" # MacOS uses Library/Fonts for user-specific fonts
-
-if [ ! -d "$FNT_DST" ]; then
-  mkdir -p "$FNT_DST"
-fi
-
-yes | cp $FNT_SRC/*.ttf "$FNT_DST/"
-echo "Copied all fonts: $FNT_SRC -> $FNT_DST"
-
 # ===================================== #
 #    Setup symlink for script assets    #
 # ===================================== #

@@ -30,20 +30,6 @@ fi
 yes | cp "$IMG_SRC" "$IMG_DST"
 echo "Copied: $IMG_SRC -> $IMG_DST"
 
-# ======================== #
-#    Upload font assets    #
-# ======================== #
-
-FNT_SRC="$SRC_ROOT/assets/fonts"
-FNT_DST="$HOME/.fonts"
-
-if [ ! -d "$FNT_DST" ]; then
-  mkdir -p "$FNT_DST"
-fi
-
-yes | cp $FNT_SRC/*.ttf "$FNT_DST/"
-echo "Copied all fonts: $FNT_SRC -> $FNT_DST"
-
 # ===================================== #
 #    Setup symlink for script assets    #
 # ===================================== #
