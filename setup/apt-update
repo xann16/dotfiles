@@ -52,10 +52,11 @@ sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.lis
 sudo apt update
 sudo apt install -y eza
 
-# manual clone of tpm (plugin manager for tmux)
+# manual clone of tpm (plugin manager for tmux) - and execute it initially
 if [ ! -d $HOME/.tmux/plugins/tpm ]; then
     git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 fi
+$HOME/.tmux/plugins/tpm/tpm
 
 # change default shell for root and current user
 sudo chsh -s $(which zsh)

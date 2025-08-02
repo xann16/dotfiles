@@ -39,8 +39,8 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 floating_modifier $mod
 
 # start a terminal (by default with default tmux session)
-bindsym $mod+Return exec kitty --session $HOME/.config/kitty/sessions/tmux-ws.conf
-bindsym $mod+Shift+Return exec kitty
+bindsym $mod+Shift+Return exec kitty --session $HOME/.config/kitty/sessions/tmux-ws.conf
+bindsym $mod+Return exec kitty
 
 # kill focused window
 bindsym $mod+q kill
