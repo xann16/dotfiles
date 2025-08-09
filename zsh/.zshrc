@@ -39,11 +39,16 @@ zinit light fdellwing/zsh-bat
 # Adding extra snippets (extra plugins from Oh My Zsh)
 zinit snippet OMZP::pip
 
-# Replay cached completions (as advised by zinit docs)
-zinit cdreplay -q
+# Set zsh-completions directory from Homebrew if available
+if type brew &>/dev/null; then
+    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+fi
 
 # Load completions
-autoload -U compinit && compinit
+autoload -Uz compinit && compinit
+
+# Replay cached completions (as advised by zinit docs)
+zinit cdreplay -q
 
 # If 'cd' is used without arguments use fzf to search through file hierarchy
 #   Source: https://kaliex.co/supercharge-your-zsh-terminal-with-fzf-a-simple-guide/

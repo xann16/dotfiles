@@ -6,9 +6,12 @@ sudo apt upgrade -y
 sudo apt install i3 i3lock xautolock feh picom python3 kitty -y
 sudo apt install git gpg xclip xsel -y
 sudo apt install tmux zsh zsh-autosuggestions -y
-sudo apt install bat ripgrep gh -y
+sudo apt install bat ripgrep gh tldr -y
 
 pip install --user bumblebee-status
+
+# update tldr cache
+tldr --update
 
 # install Meslo nerd font from powerlevel10k-media repository
 if [[ "$OSTYPE" == darwin* ]]; then

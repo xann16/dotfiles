@@ -5,8 +5,15 @@ brew install kitty
 brew install git gpg wget
 brew install xclip xsel
 brew install tmux
-brew install zsh zsh-autosuggestions
-brew install bat ripgrep gh git-delta eza
+brew install zsh zsh-autosuggestions zsh-completions
+brew install bat ripgrep gh git-delta eza tealdeer
+
+# fix permissions for zsh-completions
+chmod go-w '/opt/homebrew/share'
+chmod -R go-w '/opt/homebrew/share/zsh'
+
+# update tldr cache
+tldr --update
 
 # install Meslo nerd font from powerlevel10k-media repository
 if [[ "$OSTYPE" == darwin* ]]; then
