@@ -4,7 +4,7 @@ sudo apt update
 sudo apt upgrade -y
 
 sudo apt install i3 i3lock xautolock feh picom python3 kitty -y
-sudo apt install git gpg xclip xsel -y
+sudo apt install git gpg xclip xsel curl -y
 sudo apt install tmux zsh zsh-autosuggestions -y
 sudo apt install bat ripgrep gh tldr -y
 

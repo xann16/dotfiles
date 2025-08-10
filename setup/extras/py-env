@@ -7,3 +7,14 @@ else
 fi
 
 # TODO: add -> uv tool install - for commonly used Python tooling
+
+# miniconda installation
+if [[ "$OSTYPE" == darwin* ]]; then
+    MINICONDA_PLATFORM_SUFFIX="MacOSX-arm64"
+else
+    MINICONDA_PLATFORM_SUFFIX="Linux-x86_64"
+fi
+
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-$MINICONDA_PLATFORM_SUFFIX.sh
+bash ./Miniconda3-latest-$MINICONDA_PLATFORM_SUFFIX.sh -b -p $HOME/.miniconda
+rm ./Miniconda3-latest-$MINICONDA_PLATFORM_SUFFIX.sh
