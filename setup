@@ -1,8 +1,19 @@
 #!/usr/bin/env bash
 
-# ========================================================== #
-# ===== INTITIAL SETUP OR UPDATE OF OS PACKAGE MANAGER ===== #
-# ========================================================== #
+# BASIC CONFIGURATION DIRECTORIES SETUP 
+BACKUP_ROOT="$HOME/.dotfiles-backup"
+if [ ! -d "$BACKUO_ROOT" ]; then
+  mkdir "$BACKUP_ROOT"
+  echo -e "===> Created backup directory: $BACKUP_ROOT.\\n"
+fi
+SOURCE_ROOT=$(pwd -P)
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+
+
+
+# =========================================================== #
+# = 1 = INTITIAL SETUP AND UPDATE OF OS PACKAGE MANAGER ===== #
+# =========================================================== #
 
 #  - Homebrew for macOS
 #  - APT for Ubuntu/Debian
@@ -11,17 +22,188 @@ if [[ "$OSTYPE" == darwin* ]]; then
     echo -e "\033[0;35m===> STEP 1: Installing and updating Homebrew and packages...\033[0m\\n"
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     if ! type brew &>/dev/null; then
-        echo -e "\033[0;31m====> ERROR: Homebrew is not installed. Aborting.\033[0m"
+        echo -e "\033[0;31m===> ERROR: Homebrew is not installed. Aborting.\033[0m"
         exit 1
     fi
     brew upgrade
 else # assumes Ubuntu
     echo "\033[0;35m===> STEP 1: Updating APT packages\033[0m\\n"
     if ! type apt &>/dev/null; then
-        echo -e "\033[0;31m====> ERROR: APT is not installed. Aborting.\033[0m"
+        echo -e "\033[0;31m===> ERROR: APT is not installed. Aborting.\033[0m"
         exit 1
     fi
     sudo apt update
     sudo apt upgrade --allow-downgrades -y
 fi
-echo -e "\033[0;32m====> Package manager setup and update completed.\033[0m"
+echo -e "\033[0;32m===> STEP 1: Package manager setup and updated successfully.\033[0m"
+
+
+
+# =================================================== #
+# = 2 = BASIC TOOL INSTALLATION AND ASSET SETUP ===== #
+# =================================================== #
+
+echo -e "\\n\033[0;35m===> STEP 2: Installing basic tools and setting up assets...\033[0m"
+
+# ===> 2.1. Installation of basic tools via Homebrew or APT
+BASIC_TOOLS="git python3 curl wget gpg xsel xclip"
+if [[ "$OSTYPE" == darwin* ]]; then
+    echo -e "\033[0;35m===> STEP 2.1: Installing basic tools via Homebrew...\033[0m\\n"
+    brew install $BASIC_TOOLS
+else
+    echo -e "\033[0;35m===> STEP 2.1: Installing basic tools via APT...\033[0m\\n"
+    sudo apt install $BASIC_TOOLS -y
+fi
+
+# Verify tool installation
+if ! type git &>/dev/null; then
+    echo -e "\\n\033[0;31m===> ERROR: Git is not installed. Aborting.\033[0m"
+    exit 1
+elif ! type python3 &>/dev/null; then
+    echo -e "\\n\033[0;31m===> ERROR: Python3 is not installed. Aborting.\033[0m"
+    exit 1
+elif ! type curl &>/dev/null; then
+    echo -e "\\n\033[0;31m===> ERROR: Curl is not installed. Aborting.\033[0m"
+    exit 1
+elif ! type wget &>/dev/null; then
+    echo -e "\\n\033[0;31m===> ERROR: Wget is not installed. Aborting.\033[0m"
+    exit 1
+elif ! type gpg &>/dev/null; then
+    echo -e "\\n\033[0;31m===> ERROR: GPG is not installed. Aborting.\033[0m"
+    exit 1
+elif ! type xsel &>/dev/null && ! type xclip &>/dev/null; then
+    echo -e "\\n\033[0;31m===> ERROR: Neither xsel nor xclip is installed. Aborting.\033[0m"
+    exit 1
+else
+    echo -e "\\n\033[0;32m===> STEP 2.1: Basic tools installed successfully.\033[0m"
+fi
+
+# ===> 2.2. Setup of git configuration
+echo -e "\033[0;35m===> STEP 2.2: Setting up Git configuration...\033[0m"
+
+GIT_SRC="$SOURCE_ROOT/git"
+GIT_BCK="$BACKUP_ROOT/git"
+GIT_DST="$XDG_CONFIG_HOME/git"
+
+# If git config directory exists, back it up
+if [ -d "$GIT_DST" ]; then
+  if [ ! -L "$GIT_DST" ]; then
+    mv "$GIT_DST" "$GIT_BCK" -f
+    echo "==> Moved directory to backup: $GIT_DST -> $GIT_BCK"
+  fi
+fi
+
+# If symlink does not exist, create it
+if [ ! -L "$GIT_DST" ]; then
+  ln -s "$GIT_SRC" "$GIT_DST"
+  echo "===> Created symlink (git config): $GIT_DST -> $GIT_SRC"
+fi
+
+# Verify config
+if [ ! -f "$GIT_DST/personal.gitconfig" ] && []; then
+    echo -e "\033[0;31m===> ERROR: personal.gitconfig not found in $GIT_DST. Aborting.\033[0m"
+    exit 1
+elif [ ! -f "$GIT_DST/delta.gitconfig" ] && []; then
+    echo -e "\033[0;31m===> ERROR: delta.gitconfig not found in $GIT_DST. Aborting.\033[0m"
+    exit 1
+fi
+
+# Add git configuration includes for linked config files 
+git config --global --replace-all include.path ~/.config/git/personal.gitconfig
+git config --global --add include.path ~/.config/git/delta.gitconfig
+
+echo -e "\033[0;32m===> STEP 2.2: Git configuration set up successfully.\033[0m"
+
+# ===> 2.3. Linking to custom scripts directory
+echo -e "\033[0;35m===> STEP 2.3: Setting up link to custom scripts directory...\033[0m"
+
+SCRIPT_SRC="$SOURCE_ROOT/assets/scripts"
+SCRIPT_BCK="$BACKUP_ROOT/scripts"
+SCRIPT_DST="$HOME/.scripts"
+
+# If scripts directory exists, back it up
+if [ -d "$SCRIPT_DST" ]; then
+  if [ ! -L "$SCRIPT_DST" ]; then
+    mv "$SCRIPT_DST" "$SCRIPT_BCK" -f
+    echo "===> Moved directory to backup: $SCRIPT_DST -> $SCRIPT_BCK"
+  fi
+fi
+
+# If symlink does not exist, create it
+if [ ! -L "$SCRIPT_DST" ]; then
+  ln -s "$SCRIPT_SRC" "$SCRIPT_DST"
+  echo "===> Created symlink (custom scripts): $SCRIPT_DST -> $SCRIPT_SRC"
+fi
+
+echo -e "\033[0;32m===> STEP 2.3: Custom scripts directory linked successfully.\033[0m"
+
+# ===> 2.4. Import and add required fonts (Meslo Nerd Font)
+echo -e "\033[0;35m===> STEP 2.4: Installing required fonts...\033[0m"
+
+# Determine target font directory based on OS type
+if [[ "$OSTYPE" == darwin* ]]; then
+    TARGET_FONT_DIR=$HOME/Library/fonts
+else
+    TARGET_FONT_DIR=$HOME/.fonts
+fi
+
+# Assure that target font directory exists
+if [[ ! -d TARGET_FONT_DIR ]]; then
+    mkdir -p "$TARGET_FONT_DIR"
+fi
+
+# Font - MesloLGS NF (sourced from powerlevel10k-media repository)
+P10KM_REPO_DIR=$XDG_CONFIG_HOME/.temp/powerlevel10k-media
+if [[ -d P10KM_REPO_DIR ]]; then
+    rm -rf "$P10KM_REPO_DIR" 
+fi
+git clone --depth 1 https://github.com/romkatv/powerlevel10k-media $P10KM_REPO_DIR
+yes | cp "$P10KM_REPO_DIR"/*.ttf "$TARGET_FONT_DIR/"
+
+# Remove temporary repository directory, refresh font cache, and verify installation
+rm -rf "$P10KM_REPO_DIR"
+echo "===> Updating font cache..."
+fc-cache -f
+if [ "$(fc-list | grep -c 'MesloLGS NF')" != "4" ]; then
+    echo -e "\033[0;31m===> ERROR: Font installation failed. Aborting.\033[0m"
+    exit 1
+else
+    echo -e "\033[0;32m===> STEP 2.4: Fonts installed successfully.\033[0m"
+fi
+
+# ===> 2.5. (Ubuntu-only) Add wallpaper for i3 desktop (based on given argument)
+if [[ "$OSTYPE" != darwin* ]]; then
+    echo -e "\033[0;35m===> STEP 2.5: Setting up wallpaper...\033[0m"
+
+    IMG_SRC_BASE="$SOURCE_ROOT/assets/wallpapers"
+    IMG_DST_BASE="$HOME/Pictures"
+    IMG_DST="$IMG_DST_BASE/wallpaper.jpg"
+
+    # Establish specific wallpaper file based on the system name
+    COMP_NAME=$(uname -n | tr '[:upper:]' '[:lower:]')
+    if [[ "$COMP_NAME" =~ "vx" || "$COMP_NAME" =~ "vortex" ]]; then
+        IMG_SRC="$IMG_SRC_BASE/vortex.jpg"
+    else
+        # TODO: Add default wallpaper
+        IMG_SRC="$IMG_SRC_BASE/vortex.jpg"
+    fi
+
+    # Assure that local directory for wallpapers exists
+    if [ ! -d "$IMG_DST_BASE" ]; then
+        mkdir -p "$IMG_DST_BASE"
+    fi
+
+    # Copy the wallpaper image to the destination
+    yes | cp "$IMG_SRC" "$IMG_DST"
+    echo "===> Copied wallpaper: $IMG_SRC -> $IMG_DST"
+
+    # Verify if the wallpaper was copied successfully
+    if [ ! -f "$IMG_DST" ]; then
+        echo -e "\033[0;31m===> ERROR: Wallpaper copy failed. Aborting.\033[0m"
+        exit 1
+    else
+        echo -e "\033[0;32m===> STEP 2.5: Wallpaper set up successfully.\033[0m"
+    fi
+fi
+
+echo -e "\033[0;32m===> STEP 2: Basic tools and assets set up successfully.\033[0m"
