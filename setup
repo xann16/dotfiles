@@ -22,6 +22,6 @@ else # assumes Ubuntu
         exit 1
     fi
     sudo apt update
-    sudo apt upgrade -y
+    sudo apt upgrade --allow-downgrades -y
 fi
 echo -e "\033[0;32m====> Package manager setup and update completed.\033[0m"
