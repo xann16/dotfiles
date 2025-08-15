@@ -3,8 +3,8 @@
 # BASIC CONFIGURATION DIRECTORIES SETUP
 BACKUP_ROOT="$HOME/.dotfiles-backup"
 if [ ! -d "$BACKUP_ROOT" ]; then
-  mkdir "$BACKUP_ROOT"
-  echo -e "===> Created backup directory: $BACKUP_ROOT.\\n"
+    mkdir "$BACKUP_ROOT"
+    echo -e "===> Created backup directory: $BACKUP_ROOT.\\n"
 fi
 SOURCE_ROOT=$(pwd -P)
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
@@ -88,16 +88,16 @@ GIT_DST="$XDG_CONFIG_HOME/git"
 
 # If git config directory exists, back it up
 if [ -d "$GIT_DST" ]; then
-  if [ ! -L "$GIT_DST" ]; then
-    mv "$GIT_DST" "$GIT_BCK" -f
-    echo "=====> Moved directory to backup: $GIT_DST -> $GIT_BCK"
-  fi
+    if [ ! -L "$GIT_DST" ]; then
+        mv "$GIT_DST" "$GIT_BCK" -f
+        echo "=====> Moved directory to backup: $GIT_DST -> $GIT_BCK"
+    fi
 fi
 
 # If symlink does not exist, create it
 if [ ! -L "$GIT_DST" ]; then
-  ln -s "$GIT_SRC" "$GIT_DST"
-  echo "=====> Created symlink (git config): $GIT_DST -> $GIT_SRC"
+    ln -s "$GIT_SRC" "$GIT_DST"
+    echo "=====> Created symlink (git config): $GIT_DST -> $GIT_SRC"
 fi
 
 # Verify config
@@ -124,16 +124,16 @@ SCRIPT_DST="$HOME/.scripts"
 
 # If scripts directory exists, back it up
 if [ -d "$SCRIPT_DST" ]; then
-  if [ ! -L "$SCRIPT_DST" ]; then
-    mv "$SCRIPT_DST" "$SCRIPT_BCK" -f
-    echo "=====> Moved directory to backup: $SCRIPT_DST -> $SCRIPT_BCK"
-  fi
+    if [ ! -L "$SCRIPT_DST" ]; then
+        mv "$SCRIPT_DST" "$SCRIPT_BCK" -f
+        echo "=====> Moved directory to backup: $SCRIPT_DST -> $SCRIPT_BCK"
+    fi
 fi
 
 # If symlink does not exist, create it
 if [ ! -L "$SCRIPT_DST" ]; then
-  ln -s "$SCRIPT_SRC" "$SCRIPT_DST"
-  echo "=====> Created symlink (custom scripts): $SCRIPT_DST -> $SCRIPT_SRC"
+    ln -s "$SCRIPT_SRC" "$SCRIPT_DST"
+    echo "=====> Created symlink (custom scripts): $SCRIPT_DST -> $SCRIPT_SRC"
 fi
 
 echo -e "\033[0;32m=====> STEP 2.3: Custom scripts directory linked successfully.\033[0m"
@@ -208,3 +208,96 @@ if [[ "$OSTYPE" != darwin* ]]; then
 fi
 
 echo -e "\033[0;32m===> STEP 2: Basic tools and assets set up successfully.\033[0m"
+
+
+
+# ================================ #
+# = 3 = WINDOW MANAGER SETUP ===== #
+# ================================ #
+
+if [[ "$OSTYPE" == darwin* ]]; then
+    echo -e "\\n\033[0;35m===> STEP 3: Installing and configuring window manager... Skipped for MacOS.\033[0m\\n"
+else
+    echo -e "\\n\033[0;35m===> STEP 3: Installing and configuring window manager...\033[0m"
+
+    # ===> 3.1. Installation of window manager and related tools via APT
+    echo -e "\033[0;35m=====> STEP 3.1: Installing i3 and related tools via APT...\033[0m\\n"
+    WM_TOOLS="i3 i3lock xautolock feh picom"
+    sudo apt install $WM_TOOLS -y
+
+    # Verify tool installation
+    if ! type i3 &>/dev/null; then
+        echo -e "\\n\033[0;31m=====> ERROR: i3 Window Manager is not installed. Aborting.\033[0m"
+        exit 1
+    elif ! type i3lock &>/dev/null; then
+        echo -e "\\n\033[0;31m=====> ERROR: i3 Lock is not installed. Aborting.\033[0m"
+        exit 1
+    elif ! type xautolock &>/dev/null; then
+        echo -e "\\n\033[0;31m=====> ERROR: Xautolock is not installed. Aborting.\033[0m"
+        exit 1
+    elif ! type feh &>/dev/null; then
+        echo -e "\\n\033[0;31m=====> ERROR: Feh is not installed. Aborting.\033[0m"
+        exit 1
+    elif ! type picom &>/dev/null; then
+        echo -e "\\n\033[0;31m=====> ERROR: Picom is not installed. Aborting.\033[0m"
+        exit 1
+    else
+        echo -e "\\n\033[0;32m=====> STEP 3.1: i3 and related tools installed successfully.\033[0m"
+    fi
+
+    # ===> 3.2. Installation of bumblebee (status bar for i3) via PIP
+    echo -e "\033[0;35m=====> STEP 3.2: Installing bumblebee (status bar for i3) via PIP...\033[0m\\n"
+    pip install --user psutil bumblebee-status
+
+    # Verify installation
+    if ! type bumblebee-status &>/dev/null; then
+        echo -e "\\n\033[0;31m=====> ERROR: Bumblebee Status Bar is not installed. Aborting.\033[0m"
+        exit 1
+    else
+        echo -e "\\n\033[0;32m=====> STEP 3.2: Bumblebee (status bar for i3) installed successfully.\033[0m"
+    fi
+
+    # ===> 3.3. Setup of i3 configuration
+    echo -e "\033[0;35m=====> STEP 3.3: Setting up i3 configuration...\033[0m"
+
+    I3_SRC="$SOURCE_ROOT/i3"
+    I3_BCK="$BACKUP_ROOT/i3"
+    I3_DST="$XDG_CONFIG_HOME/i3"
+
+    # If i3 config directory exists, back it up
+    if [ -d "$I3_DST" ]; then
+        if [ ! -L "$I3_DST" ]; then
+            mv "$I3_DST" "$I3_BCK" -f
+            echo "=====> Moved directory to backup: $I3_DST -> $I3_BCK"
+        fi
+    fi
+
+    # If symlink does not exist, create it
+    if [ ! -L "$I3_DST" ]; then
+        ln -s "$I3_SRC" "$I3_DST"
+        echo "=====> Created symlink (i3 config): $I3_DST -> $I3_SRC"
+    fi
+
+    echo -e "\033[0;32m=====> STEP 3.3: i3 configuration set up successfully.\033[0m"
+
+    # ===> 3.4. Setup of Picom configuration
+    echo -e "\033[0;35m=====> STEP 3.4: Setting up Picom configuration...\033[0m"
+
+    PICOM_SRC="$SRC_ROOT/picom"
+    PICOM_BCK="$BCK_ROOT/picom"
+    PICOM_DST="$XDG_CONFIG_HOME/picom"
+
+    if [ -d "$PICOM_DST" ]; then
+        if [ ! -L "$PICOM_DST" ]; then
+            mv "$PICOM_DST" "$PICOM_BCK" -f
+            echo "=====> Moved directory to backup: $PICOM_DST -> $PICOM_BCK"
+        fi
+    fi
+
+    if [ ! -L "$PICOM_DST" ]; then
+        ln -s "$PICOM_SRC" "$PICOM_DST"
+        echo "Created symlink (Picom config): $PICOM_DST -> $PICOM_SRC"
+    fi
+
+    echo -e "\033[0;32m=====> STEP 3.4: Picom configuration set up successfully.\033[0m"
+fi
