@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# ========================================================== #
+# ===== INTITIAL SETUP OR UPDATE OF OS PACKAGE MANAGER ===== #
+# ========================================================== #
+
+#  - Homebrew for macOS
+#  - APT for Ubuntu/Debian
+
+if [[ "$OSTYPE" == darwin* ]]; then
+    echo -e "\033[0;35m===> STEP 1: Installing and updating Homebrew and packages...\033[0m\\n"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    if ! type brew &>/dev/null; then
+        echo -e "\033[0;31m====> ERROR: Homebrew is not installed. Aborting.\033[0m"
+        exit 1
+    fi
+    brew upgrade
+else # assumes Ubuntu
+    echo "\033[0;35m===> STEP 1: Updating APT packages\033[0m\\n"
+    if ! type apt &>/dev/null; then
+        echo -e "\033[0;31m====> ERROR: APT is not installed. Aborting.\033[0m"
+        exit 1
+    fi
+    sudo apt update
+    sudo apt upgrade -y
+fi
+echo -e "\033[0;32m====> Package manager setup and update completed.\033[0m"
