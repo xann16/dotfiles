@@ -300,4 +300,224 @@ else
     fi
 
     echo -e "\033[0;32m=====> STEP 3.4: Picom configuration set up successfully.\033[0m"
+
+    echo -e "\033[0;32m===> STEP 3: Window manager (i3) installed and set up successfully.\033[0m"
 fi
+
+
+
+# =================================== #
+# = 4 = TERMINAL EMULATOR SETUP ===== #
+# =================================== #
+
+echo -e "\\n\033[0;35m===> STEP 4: Setting up Kitty terminal...\033[0m"
+
+# ===> 4.1. Installation of Kitty terminal via APT
+if [[ "$OSTYPE" == darwin* ]]; then
+    echo -e "\033[0;35m=====> STEP 4.1: Installing Kitty terminal via Homebrew...\033[0m\\n"
+    brew install kitty
+else
+    echo -e "\033[0;35m=====> STEP 4.1: Installing Kitty terminal via APT...\033[0m\\n"
+    sudo apt install kitty -y
+fi
+
+# Verify installation
+if ! type kitty &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: Kitty terminal is not installed. Aborting.\033[0m"
+    exit 1
+else
+    echo -e "\\n\033[0;32m=====> STEP 4.1: Kitty terminal installed successfully.\033[0m"
+fi
+
+# ===> 4.2. Setup of Kitty configuration
+echo -e "\033[0;35m=====> STEP 4.2: Setting up Kitty configuration...\033[0m"
+
+KITTY_SRC="$SOURCE_ROOT/kitty"
+KITTY_BCK="$BACKUP_ROOT/kitty"
+KITTY_DST="$XDG_CONFIG_HOME/kitty"
+
+# If Kitty config directory exists, back it up
+if [ -d "$KITTY_DST" ]; then
+  if [ ! -L "$KITTY_DST" ]; then
+    mv "$KITTY_DST" "$KITTY_BCK"
+    echo "=====> Moved file to backup: $KITTY_DST -> $KITTY_BCK"
+  fi
+fi
+
+# If symlink does not exist, create it
+if [ ! -L "$KITTY_DST" ]; then
+  ln -s "$KITTY_SRC" "$KITTY_DST"
+  echo "=====> Created symlink (kitty config): $KITTY_DST -> $KITTY_SRC"
+fi
+
+echo -e "\033[0;32m=====> STEP 4.2: Kitty configuration set up successfully.\033[0m"
+
+
+
+# ====================================== #
+# = 5 = TERMINAL MULTIPLEXER SETUP ===== #
+# ====================================== #
+
+echo -e "\\n\033[0;35m===> STEP 5: Setting up terminal multiplexer (tmux)...\033[0m"
+
+# ===> 5.1. Installation of tmux via APT or Homebrew
+if [[ "$OSTYPE" == darwin* ]]; then
+    echo -e "\033[0;35m=====> STEP 5.1: Installing tmux via Homebrew...\033[0m\\n"
+    brew install tmux
+else
+    echo -e "\033[0;35m=====> STEP 5.1: Installing tmux via APT...\033[0m\\n"
+    sudo apt install tmux -y
+fi
+
+# Verify installation
+if ! type tmux &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: Tmux is not installed. Aborting.\033[0m"
+    exit 1
+else
+    echo -e "\\n\033[0;32m=====> STEP 5.1: Tmux installed successfully.\033[0m"
+fi
+
+# ===> 5.2. Setup of Tmux configuration
+echo -e "\033[0;35m=====> STEP 5.2: Setting up Tmux configuration...\033[0m"
+
+TMUX_SRC="$SOURCE_ROOT/tmux"
+TMUX_BCK="$BACKUP_ROOT/tmux"
+TMUX_DST="$XDG_CONFIG_HOME/tmux"
+
+# If Tmux config directory exists, back it up
+if [ -d "$TMUX_DST" ]; then
+  if [ ! -L "$TMUX_DST" ]; then
+    mv "$TMUX_DST" "$TMUX_BCK" -f
+    echo "=====> Moved directory to backup: $TMUX_DST -> $TMUX_BCK"
+  fi
+fi
+
+# If symlink does not exist, create it
+if [ ! -L "$TMUX_DST" ]; then
+  ln -s "$TMUX_SRC" "$TMUX_DST"
+  echo "=====> Created symlink (tmux config): $TMUX_DST -> $TMUX_SRC"
+fi
+
+echo -e "\033[0;32m=====> STEP 4.2: Tmux configuration set up successfully.\033[0m"
+
+# ===> 5.3. Installation and uptdate of Tmux Plugin Manager (TPM)
+echo -e "\033[0;35m=====> STEP 5.3: Installing and updating Tmux Plugin Manager (TPM)...\033[0m\\n"
+
+# Clone TPM repo if it does not exist, otherwise pull changes
+TPM_DST="$HOME/.tmux/plugins/tpm"
+if [ ! -d "$TPM_DST" ]; then
+    git clone https://github.com/tmux-plugins/tpm "$TPM_DST"
+else
+    cd "$TPM_DST" && git pull && cd $SOURCE_ROOT
+fi
+
+# Execute TPM to install plugins
+"$TPM_DST/tpm"
+
+# Verify TPM installation
+if [ $? -ne 0 ]; then
+    echo -e "\\n\033[0;31m=====> ERROR: Tmux Plugin Manager (TPM) installation failed. Aborting.\033[0m"
+    exit 1
+fi
+
+echo -e "\\n\033[0;32m=====> STEP 5.3: Tmux Plugin Manager (TPM) installed and updated successfully.\033[0m"
+
+echo -e "\033[0;32m===> STEP 5: Terminal multiplexer (tmux) set up successfully.\033[0m"
+
+
+
+# ======================= #
+# = 6 = SETUP SHELL ===== #
+# ======================= #
+
+echo -e "\\n\033[0;35m===> STEP 6: Setting up shell (zsh)...\033[0m"
+
+# ===> 6.1. Installation of zsh and related packages via APT or Homebrew
+if [[ "$OSTYPE" == darwin* ]]; then
+    echo -e "\033[0;35m=====> STEP 6.1: Installing zsh and related packages via Homebrew...\033[0m\\n"
+    brew install zsh zsh-autosuggestions zsh-completions
+else
+    echo -e "\033[0;35m=====> STEP 6.1: Installing zsh and related packages via APT...\033[0m\\n"
+    sudo apt install zsh zsh-autosuggestions -y
+fi
+
+# Verify installation
+if ! type zsh &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: Zsh is not installed. Aborting.\033[0m"
+    exit 1
+else
+    echo -e "\\n\033[0;32m=====> STEP 6.1: Zsh and related packages installed successfully.\033[0m"
+fi
+
+# ===> 6.2. Setup of Zsh configuration
+echo -e "\033[0;35m=====> STEP 6.2: Setting up Zsh configuration...\033[0m"
+
+ZSHRC_SRC="$SOURCE_ROOT/zsh/.zshrc"
+ZSHRC_BCK="$BACKUP_ROOT/zsh/.zshrc"
+ZSHRC_DST="$HOME/.zshrc"
+
+# If Zsh config file exists, back it up
+if [ -f "$ZSHRC_DST" ]; then
+  if [ ! -L "$ZSHRC_DST" ]; then
+    mkdir -p "$BCK_ROOT/zsh"
+    mv "$ZSHRC_DST" "$ZSHRC_BCK" -f
+    echo "=====> Moved file to backup: $ZSHRC_DST -> $ZSHRC_BCK"
+  fi
+fi
+
+# If symlink does not exist, create it
+if [ ! -L "$ZSHRC_DST" ]; then
+  ln -s "$ZSHRC_SRC" "$ZSHRC_DST"
+  echo "===== >Created symlink (zsh config file): $ZSHRC_DST -> $ZSHRC_SRC"
+fi
+
+ZSH_SRC="$SOURCE_ROOT/zsh"
+ZSH_BCK="$BACKUP_ROOT/zsh"
+ZSH_DST="$XDG_CONFIG_HOME/zsh"
+
+# If Zsh config directory exists, back it up
+if [ -d "$ZSH_DST" ]; then
+  if [ ! -L "$ZSH_DST" ]; then
+    mv "$ZSH_DST" "$ZSH_BCK" -f
+    echo "=====> Moved directory to backup: $ZSH_DST -> $ZSH_BCK"
+  fi
+fi
+
+# If symlink does not exist, create it
+if [ ! -L "$ZSH_DST" ]; then
+  ln -s "$ZSH_SRC" "$ZSH_DST"
+  echo "=====> Created symlink (zsh config directory): $ZSH_DST -> $ZSH_SRC"
+fi
+
+echo -e "\033[0;32m=====> STEP 6.2: Zsh configuration set up successfully.\033[0m"
+
+# ===> 6.3. Set Zsh as the default shell
+echo -e "\033[0;35m=====> STEP 6.3: Setting Zsh as the default shell...\033[0m"
+
+# Add Zsh to the list of allowed shells if not already present
+if ! grep -q "$(which zsh)" /etc/shells; then
+    echo "$(which zsh)" | sudo tee -a /etc/shells > /dev/null
+fi
+
+if [ "$SHELL" != "$(which zsh)" ]; then
+    chsh -s "$(which zsh)"
+    echo "=====> Changed default shell to Zsh."
+    sudo chsh -s "$(which zsh)"
+    echo "=====> Changed root shell to Zsh."
+else
+    echo "=====> Zsh is already the default shell."
+fi
+
+echo -e "\033[0;32m=====> STEP 6.3: Zsh set as the default shell successfully.\033[0m"
+
+# ===> 6.4. Fix permissions for Homebrew-installed zsh-completions (MacoOS-only)
+if [[ "$OSTYPE" == darwin* ]]; then
+    echo -e "\033[0;35m=====> STEP 6.4: Fixing permissions for zsh-completions...\033[0m"
+    chmod go-w '/opt/homebrew/share'
+    chmod -R go-w '/opt/homebrew/share/zsh'
+    echo -e "\033[0;32m=====> STEP 6.4: Permissions for zsh-completions fixed successfully.\033[0m"
+else
+    echo -e "\033[0;35m=====> STEP 6.4: Skipped for non-MacOS systems.\033[0m"
+fi
+
+echo -e "\033[0;32m===> STEP 6: Shell (zsh) set up successfully.\033[0m"

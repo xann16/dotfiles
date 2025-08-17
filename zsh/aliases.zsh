@@ -13,7 +13,7 @@ alias lztt='eza --long --git --icons=always --color=always --no-filesize --no-ti
 alias lzttt='eza --long --git --icons=always --color=always --no-filesize --no-time --no-user --no-permissions --tree --level=4'
 alias lztx='eza --long --git --icons=always --color=always --no-filesize --no-time --no-user --no-permissions --tree'
 alias icat='kitten icat'
-if [[ ! "$OSTYPE" == darwin* ]]; then
+if [[ "$OSTYPE" != darwin* ]]; then
     alias bat='batcat --color=always'
 fi
 
