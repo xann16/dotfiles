@@ -565,13 +565,23 @@ else
 fi
 
 # ===> 7.2. Update Tldr pages cache
-echo -e "\033[0;35m=====> STEP 7.2: Updating Tldr pages cache...\033[0m"
-tldr --update
+echo -e "\033[0;35m=====> STEP 7.2: Updating Tldr pages cache...\033[0m\\n"
+
+if [[ "$OSTYPE" == darwin* ]]; then
+    tldr --update
+else
+    # On Ubuntu, update command has to be called from tldr cache repo location
+    TLDR_CACHE_DIR=$HOME/.local/share/tldr/tldr
+    cd "$TLDR_CACHE_DIR"
+    git pull origin main
+    cd "$SOURCE_ROOT"
+fi
+
 if [ $? -ne 0 ]; then
-    echo -e "\033[0;31m=====> ERROR: Tldr pages update failed. Aborting.\033[0m"
+    echo -e "\\n\033[0;31m=====> ERROR: Tldr pages update failed. Aborting.\033[0m"
     exit 1
 else
-    echo -e "\033[0;32m=====> STEP 7.2: Tldr pages cache updated successfully.\033[0m"
+    echo -e "\\n\033[0;32m=====> STEP 7.2: Tldr pages cache updated successfully.\033[0m"
 fi
 
 # ===> 7.3. Manual install of FZF
@@ -619,10 +629,11 @@ if [[ "$OSTYPE" != darwin* ]]; then
 
     # Add Gierens repository for Eza
     sudo mkdir -p /etc/apt/keyrings
-    wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+    wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --yes --dearmor -o /etc/apt/keyrings/gierens.gpg
     echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
     sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
     sudo apt update
+    rm deb.asc
 
     # Install Eza via APT
     sudo apt install eza -y
