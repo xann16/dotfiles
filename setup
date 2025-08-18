@@ -521,3 +521,119 @@ else
 fi
 
 echo -e "\033[0;32m===> STEP 6: Shell (zsh) set up successfully.\033[0m"
+
+
+
+# =================================== #
+# = 7 = INSTALL EXTRA CLI TOOLS ===== #
+# =================================== #
+
+echo -e "\\n\033[0;35m===> STEP 7: Installing extra CLI tools...\033[0m"
+
+# ===> 7.1. Installation of extra CLI tools via Homebrew or APT
+if [[ "$OSTYPE" == darwin* ]]; then
+    echo -e "\033[0;35m=====> STEP 7.1: Installing extra CLI tools via Homebrew...\033[0m\\n"
+    brew install bat ripgrep gh tealdeer eza git-delta
+    BAT_CMD_NAME=bat
+else
+    echo -e "\033[0;35m=====> STEP 7.1: Installing extra CLI tools via APT...\033[0m\\n"
+    sudo apt install bat ripgrep gh tldr -y
+    BAT_CMD_NAME=batcat
+fi
+
+# Verify tool installation
+if ! type "$BAT_CMD_NAME" &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: Bat is not installed. Aborting.\033[0m"
+    exit 1
+elif ! type rg &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: Ripgrep is not installed. Aborting.\033[0m"
+    exit 1
+elif ! type gh &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: GitHub CLI is not installed. Aborting.\033[0m"
+    exit 1
+elif ! type tldr &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: Tealdeer is not installed. Aborting.\033[0m"
+    exit 1
+elif ! type eza &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: Eza is not installed. Aborting.\033[0m"
+    exit 1
+elif ! type delta &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: Git Delta is not installed. Aborting.\033[0m"
+    exit 1
+else
+    echo -e "\\n\033[0;32m=====> STEP 7.1: Extra CLI tools installed successfully.\033[0m"
+fi
+
+# ===> 7.2. Update Tldr pages cache
+echo -e "\033[0;35m=====> STEP 7.2: Updating Tldr pages cache...\033[0m"
+tldr --update
+if [ $? -ne 0 ]; then
+    echo -e "\033[0;31m=====> ERROR: Tldr pages update failed. Aborting.\033[0m"
+    exit 1
+else
+    echo -e "\033[0;32m=====> STEP 7.2: Tldr pages cache updated successfully.\033[0m"
+fi
+
+# ===> 7.3. Manual install of FZF
+echo -e "\033[0;35m=====> STEP 7.3: Installing FZF (Fuzzy Finder)...\033[0m\\n"
+
+# Determine and clear directory to clone FZF repo
+FZF_REPO_DIR=$XDG_CONFIG_HOME/.temp/fzf
+if [[ -d FZF_REPO_DIR ]]; then
+    rm -rf "$FZF_REPO_DIR"
+fi
+
+git clone --depth 1 https://github.com/junegunn/fzf.git $FZF_REPO_DIR
+"$FZF_REPO_DIR/install" --xdg --key-bindings --completion --no-update-rc
+rm -rf "$FZF_REPO_DIR"
+
+# Verify FZF installation
+if ! type fzf &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: FZF is not installed. Aborting.\033[0m"
+    exit 1
+else
+    echo -e "\\n\033[0;32m=====> STEP 7.3: FZF installed successfully.\033[0m"
+fi
+
+# ===> 7.4. Manual install of Git Delta (Ubuntu only)
+if [[ "$OSTYPE" != darwin* ]]; then
+    echo -e "\033[0;35m=====> STEP 7.4: Installing Git Delta...\033[0m\\n"
+
+    GIT_DELTA_FILENAME=git-delta_0.18.2_amd64.deb
+    wget https://github.com/dandavison/delta/releases/download/0.18.2/$GIT_DELTA_FILENAME
+    sudo dpkg -i $GIT_DELTA_FILENAME
+    rm $GIT_DELTA_FILENAME
+
+    # Verify Git Delta installation
+    if ! type delta &>/dev/null; then
+        echo -e "\\n\033[0;31m=====> ERROR: Git Delta is not installed. Aborting.\033[0m"
+        exit 1
+    else
+        echo -e "\\n\033[0;32m=====> STEP 7.4: Git Delta installed successfully.\033[0m"
+    fi
+fi
+
+# ===> 7.5. Manual install of Eza (Ubuntu only)
+if [[ "$OSTYPE" != darwin* ]]; then
+    echo -e "\033[0;35m=====> STEP 7.5: Installing Eza (replacement for ls)...\033[0m\\n"
+
+    # Add Gierens repository for Eza
+    sudo mkdir -p /etc/apt/keyrings
+    wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+    sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+    sudo apt update
+
+    # Install Eza via APT
+    sudo apt install eza -y
+
+    # Verify Eza installation
+    if ! type eza &>/dev/null; then
+        echo -e "\\n\033[0;31m=====> ERROR: Eza is not installed. Aborting.\033[0m"
+        exit 1
+    else
+        echo -e "\\n\033[0;32m=====> STEP 7.5: Eza installed successfully.\033[0m"
+    fi
+fi
+
+echo -e "\033[0;32m===> STEP 7: Extra CLI tools installed successfully.\033[0m"
