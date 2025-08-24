@@ -412,7 +412,7 @@ else
 fi
 
 # Execute TPM to install plugins
-"$TPM_DST/tpm"
+tmux -c "$TPM_DST/tpm"
 
 # Verify TPM installation
 if [ $? -ne 0 ]; then
@@ -590,12 +590,11 @@ echo -e "\033[0;35m=====> STEP 7.3: Installing FZF (Fuzzy Finder)...\033[0m\\n"
 # Determine and clear directory to clone FZF repo
 FZF_REPO_DIR=$XDG_CONFIG_HOME/.temp/fzf
 if [[ -d FZF_REPO_DIR ]]; then
-    rm -rf "$FZF_REPO_DIR"
+    cd "$FZF_REPO_DIR" && git pull && cd $SOURCE_ROOT
+else 
+    git clone --depth 1 https://github.com/junegunn/fzf.git $FZF_REPO_DIR
 fi
-
-git clone --depth 1 https://github.com/junegunn/fzf.git $FZF_REPO_DIR
 "$FZF_REPO_DIR/install" --xdg --key-bindings --completion --no-update-rc
-rm -rf "$FZF_REPO_DIR"
 
 # Verify FZF installation
 if ! type fzf &>/dev/null; then
