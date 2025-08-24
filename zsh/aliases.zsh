@@ -7,15 +7,19 @@ alias grep='grep --color=auto'
 alias ls='ls --color=auto'
 alias ll='ls -lah'
 alias lt='ls -lath'
-alias lz='eza -laghm@ --git --icons=always --color=always'
-alias lzt='eza --long --git --icons=always --color=always --no-filesize --no-time --no-user --no-permissions --tree --level=2'
-alias lztt='eza --long --git --icons=always --color=always --no-filesize --no-time --no-user --no-permissions --tree --level=3'
-alias lzttt='eza --long --git --icons=always --color=always --no-filesize --no-time --no-user --no-permissions --tree --level=4'
-alias lztx='eza --long --git --icons=always --color=always --no-filesize --no-time --no-user --no-permissions --tree'
+alias lz='eza -laghm@ --git --icons=always --color=always --group-directories-first'
+alias lzs='eza -laghm@ --git --icons=always --color=always --group-directories-first --total-size'
+alias lzt='eza --long --all --git --group-directories-first --icons=always --color=always --no-filesize --no-time --no-user --no-permissions --tree --level=2'
+alias lztt='eza --long -all --git --group-directories-first --icons=always --color=always --no-filesize --no-time --no-user --no-permissions --tree --level=3'
+alias lzttt='eza --long --all --git --group-directories-first --icons=always --color=always --no-filesize --no-time --no-user --no-permissions --tree --level=4'
+alias lztx='eza --long --all --git --group-directories-first --icons=always --color=always --no-filesize --no-time --no-user --no-permissions --tree'
 alias icat='kitten icat'
+
 if [[ "$OSTYPE" != darwin* ]]; then
     alias bat='batcat --color=always'
 fi
+alias catt='bat --paging=never --color=always'
+alias batt='bat --paging=never --color=always'
 
 
 
