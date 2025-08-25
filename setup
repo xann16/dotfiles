@@ -646,4 +646,12 @@ if [[ "$OSTYPE" != darwin* ]]; then
     fi
 fi
 
+# ===> 7.6. Setup GitHub CLI configuration
+echo -e "\033[0;35m=====> STEP 7.6: Setting up GitHub CLI configuration...\033[0m"
+gh config set editor "nvim"
+gh config set pager "delta"
+gh config set browser "firefox"
+gh config set color_labels "enabled"
+echo -e "\033[0;32m=====> STEP 7.6: GitHub CLI configuration set up successfully.\033[0m"
+
 echo -e "\033[0;32m===> STEP 7: Extra CLI tools installed successfully.\033[0m"

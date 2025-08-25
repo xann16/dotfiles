@@ -113,6 +113,10 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 # Extra PATH additions
 export PATH="$HOME/.local/bin:$HOME/.scripts/bin:$PATH"
 
+# Add Firefox to PATH on MacOS
+if [[ "$OSTYPE" == darwin* ]]; then
+    export PATH="/Applications/Firefox.app/Contents/MacOS:$PATH"
+fi
 
 # --- ALIASES ---
 
