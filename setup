@@ -425,7 +425,6 @@ echo -e "\\n\033[0;32m=====> STEP 5.3: Tmux Plugin Manager (TPM) installed and u
 echo -e "\033[0;32m===> STEP 5: Terminal multiplexer (tmux) set up successfully.\033[0m"
 
 
-
 # ======================= #
 # = 6 = SETUP SHELL ===== #
 # ======================= #
@@ -655,3 +654,52 @@ gh config set color_labels "enabled"
 echo -e "\033[0;32m=====> STEP 7.6: GitHub CLI configuration set up successfully.\033[0m"
 
 echo -e "\033[0;32m===> STEP 7: Extra CLI tools installed successfully.\033[0m"
+
+
+# ======================== #
+# = 8 = EDITOR SETUP ===== #
+# ======================== #
+
+echo -e "\\n\033[0;35m===> STEP 5: Setting up editor (Neovim)...\033[0m"
+
+# ===> 5.1. Installation of Neovim via APT or Homebrew
+if [[ "$OSTYPE" == darwin* ]]; then
+    echo -e "\033[0;35m=====> STEP 5.1: Installing Neovim via Homebrew...\033[0m\\n"
+    brew install nvim
+else
+    echo -e "\033[0;35m=====> STEP 5.1: Installing Neovim via APT...\033[0m\\n"
+    sudo apt install nvim -y
+fi
+
+# Verify installation
+if ! type nvim &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: Neovim is not installed. Aborting.\033[0m"
+    exit 1
+else
+    echo -e "\\n\033[0;32m=====> STEP 5.1: Neovim installed successfully.\033[0m"
+fi
+
+# ===> 5.2. Setup of Neovim configuration
+# echo -e "\033[0;35m=====> STEP 5.2: Setting up Neovim configuration...\033[0m"
+
+#TMUX_SRC="$SOURCE_ROOT/tmux"
+#TMUX_BCK="$BACKUP_ROOT/tmux"
+#TMUX_DST="$XDG_CONFIG_HOME/tmux"
+
+# If Tmux config directory exists, back it up
+#if [ -d "$TMUX_DST" ]; then
+#  if [ ! -L "$TMUX_DST" ]; then
+#    mv "$TMUX_DST" "$TMUX_BCK" -f
+#    echo "=====> Moved directory to backup: $TMUX_DST -> $TMUX_BCK"
+#  fi
+#fi
+
+# If symlink does not exist, create it
+#if [ ! -L "$TMUX_DST" ]; then
+#  ln -s "$TMUX_SRC" "$TMUX_DST"
+#  echo "=====> Created symlink (tmux config): $TMUX_DST -> $TMUX_SRC"
+#fi
+
+#echo -e "\033[0;32m=====> STEP 4.2: Neovim configuration set up successfully.\033[0m"
+
+echo -e "\033[0;32m===> STEP 8: Editor (Neovim) set up successfully.\033[0m"
