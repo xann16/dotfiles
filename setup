@@ -604,7 +604,7 @@ fi
 "$FZF_REPO_DIR/install" --xdg --key-bindings --completion --no-update-rc
 
 # Verify FZF installation
-if ! type fzf &>/dev/null; then
+if [[ $? -ne 0 ]]; then
     echo -e "\\n\033[0;31m=====> ERROR: FZF is not installed. Aborting.\033[0m"
     exit 1
 else
