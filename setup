@@ -554,17 +554,22 @@ elif ! type gh &>/dev/null; then
     echo -e "\\n\033[0;31m=====> ERROR: GitHub CLI is not installed. Aborting.\033[0m"
     exit 1
 elif ! type tldr &>/dev/null; then
-    echo -e "\\n\033[0;31m=====> ERROR: Tealdeer is not installed. Aborting.\033[0m"
+    echo -e "\\n\033[0;31m=====> ERROR: Tldr is not installed. Aborting.\033[0m"
     exit 1
-elif ! type eza &>/dev/null; then
-    echo -e "\\n\033[0;31m=====> ERROR: Eza is not installed. Aborting.\033[0m"
-    exit 1
-elif ! type delta &>/dev/null; then
-    echo -e "\\n\033[0;31m=====> ERROR: Git Delta is not installed. Aborting.\033[0m"
-    exit 1
-else
-    echo -e "\\n\033[0;32m=====> STEP 7.1: Extra CLI tools installed successfully.\033[0m"
 fi
+
+if [[ "$OSTYPE" == darwin* ]]; then
+    if ! type eza &>/dev/null; then
+        echo -e "\\n\033[0;31m=====> ERROR: Eza is not installed. Aborting.\033[0m"
+        exit 1
+    elif ! type delta &>/dev/null; then
+        echo -e "\\n\033[0;31m=====> ERROR: Git Delta is not installed. Aborting.\033[0m"
+        exit 1
+    fi
+fi
+
+echo -e "\\n\033[0;32m=====> STEP 7.1: Extra CLI tools installed successfully.\033[0m"
+
 
 # ===> 7.2. Update Tldr pages cache
 echo -e "\033[0;35m=====> STEP 7.2: Updating Tldr pages cache...\033[0m\\n"
