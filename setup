@@ -225,7 +225,7 @@ else
 
     # ===> 3.1. Installation of window manager and related tools via APT
     echo -e "\033[0;35m=====> STEP 3.1: Installing i3 and related tools via APT...\033[0m\\n"
-    WM_TOOLS="i3 i3lock xautolock feh picom"
+    WM_TOOLS="i3 i3lock xautolock feh picom pulseaudio"
     sudo apt install $WM_TOOLS -y
 
     # Verify tool installation
@@ -250,7 +250,7 @@ else
 
     # ===> 3.2. Installation of bumblebee (status bar for i3) via PIP
     echo -e "\033[0;35m=====> STEP 3.2: Installing bumblebee (status bar for i3) via PIP...\033[0m\\n"
-    pip install --user psutil bumblebee-status
+    pip install --user psutil bumblebee-status --break-system-packages
 
     # Verify installation
     if [ $? -ne 0 ]; then
@@ -680,7 +680,7 @@ else
 fi
 
 # Verify installation
-if ! type nvim &>/dev/null; then
+if ! type neovim &>/dev/null; then
     echo -e "\\n\033[0;31m=====> ERROR: Neovim is not installed. Aborting.\033[0m"
     exit 1
 else
