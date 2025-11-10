@@ -162,6 +162,10 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
+if [[ ! -d "$HOME/.miniconda" ]] && [[ -d "$HOME/miniconda3" ]]; then
+    ln -s "$HOME/miniconda3" "$HOME/.miniconda"
+fi
+
 __conda_setup="$('$HOME/.miniconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
@@ -172,6 +176,7 @@ else
         export PATH="$HOME/.miniconda/bin:$PATH"
     fi
 fi
+eval "$(conda shell.zsh hook)"
 unset __conda_setup
 # <<< conda initialize <<<
 

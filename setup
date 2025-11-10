@@ -673,10 +673,10 @@ echo -e "\\n\033[0;35m===> STEP 5: Setting up editor (Neovim)...\033[0m"
 # ===> 5.1. Installation of Neovim via APT or Homebrew
 if [[ "$OSTYPE" == darwin* ]]; then
     echo -e "\033[0;35m=====> STEP 5.1: Installing Neovim via Homebrew...\033[0m\\n"
-    brew install nvim
+    brew install neovim
 else
     echo -e "\033[0;35m=====> STEP 5.1: Installing Neovim via APT...\033[0m\\n"
-    sudo apt install nvim -y
+    sudo apt install neovim -y
 fi
 
 # Verify installation
