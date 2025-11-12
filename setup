@@ -32,6 +32,10 @@ else # assumes Ubuntu
         echo -e "\033[0;31m===> ERROR: APT is not installed. Aborting.\033[0m"
         exit 1
     fi
+
+    # add extra repositories here if needed
+    sudo add-apt-repository ppa:neovim-ppa/unstable -y
+
     sudo apt update
     sudo apt upgrade --allow-downgrades -y
     echo ""
@@ -50,10 +54,10 @@ echo -e "\\n\033[0;35m===> STEP 2: Installing basic tools and setting up assets.
 BASIC_TOOLS="git python3 curl wget gpg xsel xclip"
 if [[ "$OSTYPE" == darwin* ]]; then
     echo -e "\033[0;35m=====> STEP 2.1: Installing basic tools via Homebrew...\033[0m\\n"
-    brew install $BASIC_TOOLS
+    brew install $BASIC_TOOLS fd
 else
     echo -e "\033[0;35m=====> STEP 2.1: Installing basic tools via APT...\033[0m\\n"
-    sudo apt install $BASIC_TOOLS python3-pip -y
+    sudo apt install $BASIC_TOOLS python3-pip fd-find -y
 fi
 
 # Verify tool installation
@@ -668,46 +672,46 @@ echo -e "\033[0;32m===> STEP 7: Extra CLI tools installed successfully.\033[0m"
 # = 8 = EDITOR SETUP ===== #
 # ======================== #
 
-echo -e "\\n\033[0;35m===> STEP 5: Setting up editor (Neovim)...\033[0m"
+echo -e "\\n\033[0;35m===> STEP 8: Setting up editor (Neovim)...\033[0m"
 
-# ===> 5.1. Installation of Neovim via APT or Homebrew
+# ===> 8.1. Installation of Neovim via APT or Homebrew
 if [[ "$OSTYPE" == darwin* ]]; then
-    echo -e "\033[0;35m=====> STEP 5.1: Installing Neovim via Homebrew...\033[0m\\n"
+    echo -e "\033[0;35m=====> STEP 8.1: Installing Neovim via Homebrew...\033[0m\\n"
     brew install neovim
 else
-    echo -e "\033[0;35m=====> STEP 5.1: Installing Neovim via APT...\033[0m\\n"
+    echo -e "\033[0;35m=====> STEP 8.1: Installing Neovim via APT...\033[0m\\n"
     sudo apt install neovim -y
 fi
 
 # Verify installation
-if ! type neovim &>/dev/null; then
+if ! type nvim &>/dev/null; then
     echo -e "\\n\033[0;31m=====> ERROR: Neovim is not installed. Aborting.\033[0m"
     exit 1
 else
-    echo -e "\\n\033[0;32m=====> STEP 5.1: Neovim installed successfully.\033[0m"
+    echo -e "\\n\033[0;32m=====> STEP 8.1: Neovim installed successfully.\033[0m"
 fi
 
-# ===> 5.2. Setup of Neovim configuration
-# echo -e "\033[0;35m=====> STEP 5.2: Setting up Neovim configuration...\033[0m"
+# ===> 8.2. Setup of Neovim configuration
+echo -e "\033[0;35m=====> STEP 8.2: Setting up Neovim configuration...\033[0m"
 
-#TMUX_SRC="$SOURCE_ROOT/tmux"
-#TMUX_BCK="$BACKUP_ROOT/tmux"
-#TMUX_DST="$XDG_CONFIG_HOME/tmux"
+NVIM_SRC="$SOURCE_ROOT/nvim"
+NVIM_BCK="$BACKUP_ROOT/nvim"
+NVIM_DST="$XDG_CONFIG_HOME/nvim"
 
 # If Tmux config directory exists, back it up
-#if [ -d "$TMUX_DST" ]; then
-#  if [ ! -L "$TMUX_DST" ]; then
-#    mv "$TMUX_DST" "$TMUX_BCK" -f
-#    echo "=====> Moved directory to backup: $TMUX_DST -> $TMUX_BCK"
-#  fi
-#fi
+if [ -d "$NVIM_DST" ]; then
+  if [ ! -L "$NVIM_DST" ]; then
+    mv "$NVIM_DST" "$NVIM_BCK" -f
+    echo "=====> Moved directory to backup: $NVIM_DST -> $NVIM_BCK"
+  fi
+fi
 
 # If symlink does not exist, create it
-#if [ ! -L "$TMUX_DST" ]; then
-#  ln -s "$TMUX_SRC" "$TMUX_DST"
-#  echo "=====> Created symlink (tmux config): $TMUX_DST -> $TMUX_SRC"
-#fi
+if [ ! -L "$NVIM_DST" ]; then
+  ln -s "$NVIM_SRC" "$NVIM_DST"
+  echo "=====> Created symlink (nvim config): $NVIM_DST -> $NVIM_SRC"
+fi
 
-#echo -e "\033[0;32m=====> STEP 4.2: Neovim configuration set up successfully.\033[0m"
+#echo -e "\033[0;32m=====> STEP 8.2: Neovim configuration set up successfully.\033[0m"
 
 echo -e "\033[0;32m===> STEP 8: Editor (Neovim) set up successfully.\033[0m"
