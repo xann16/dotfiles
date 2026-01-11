@@ -691,8 +691,28 @@ else
     echo -e "\\n\033[0;32m=====> STEP 8.1: Neovim installed successfully.\033[0m"
 fi
 
-# ===> 8.2. Setup of Neovim configuration
-echo -e "\033[0;35m=====> STEP 8.2: Setting up Neovim configuration...\033[0m"
+# ===> 8.2. Installation of Neovim plugin dependencies via APT or Homebrew
+if [[ "$OSTYPE" == darwin* ]]; then
+    echo -e "\033[0;35m=====> STEP 8.2: Installing Neovim plugin dependencies via Homebrew...\033[0m\\n"
+    brew install lazygit luarocks
+else
+    echo -e "\033[0;35m=====> STEP 8.2: Installing Neovim plugin dependencies via APT...\033[0m\\n"
+    sudo apt install lazygit luarocks -y
+fi
+
+# Verify installation
+if ! type lazygit &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: LazyGit is not installed. Aborting.\033[0m"
+    exit 1
+elif ! type luarocks &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: LuaRocks is not installed. Aborting.\033[0m"
+    exit 1
+else
+    echo -e "\\n\033[0;32m=====> STEP 8.2: Neovim plugin dependencies installed successfully.\033[0m"
+fi
+
+# ===> 8.3. Setup of Neovim configuration
+echo -e "\033[0;35m=====> STEP 8.3: Setting up Neovim configuration...\033[0m"
 
 NVIM_SRC="$SOURCE_ROOT/nvim"
 NVIM_BCK="$BACKUP_ROOT/nvim"
@@ -712,6 +732,6 @@ if [ ! -L "$NVIM_DST" ]; then
   echo "=====> Created symlink (nvim config): $NVIM_DST -> $NVIM_SRC"
 fi
 
-#echo -e "\033[0;32m=====> STEP 8.2: Neovim configuration set up successfully.\033[0m"
+#echo -e "\033[0;32m=====> STEP 8.3: Neovim configuration set up successfully.\033[0m"
 
 echo -e "\033[0;32m===> STEP 8: Editor (Neovim) set up successfully.\033[0m"
