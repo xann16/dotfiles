@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+
+# Installs Python development environment, in particular:
+#   - does not install 'python' itself (assumed to be installed in normal 'setup')
+#   - 'uv' - basic management tool for handling Python projects
+#   - 'miniconda' - lightweight conda package manager provider
+#   - extra tools installed via 'uv tool' to use as standalone, including:
+#      -> 'ruff' - consolidated linter and formatter
+#      -> 'mypy' - static type checker
+#      -> 'pre-commit' - tool for managing pre-commit hooks and running all preset tools
+#      -> 'pdoc' - documentation generator (for local testing)
+#      -> 'jupyterlab' - interactive development environment for Jupyter notebooks
+
+# ================================================ #
+# = A = SETUP PYTHON DEVELOPMENT ENVIRONMENT ===== #
+# ================================================ #
+
+echo -e "\\n\033[0;35m===> DEVENV - STEP A: Setting up Python development environment...\033[0m"
+
+# ===> A.1. Installation of uv via Homebrew or dedicated install script
+if [[ "$OSTYPE" == darwin* ]]; then
+    echo -e "\033[0;35m=====> DEVENV - STEP A.1: Installing uv via Homebrew...\033[0m\\n"
+    brew install uv
+else
+    echo -e "\033[0;35m=====> DEVENV - STEP A.1: Installing uv via dedicated install script...\033[0m\\n"
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+fi
+
+# Verify uv installation
+if ! type uv &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: uv is not installed. Aborting.\033[0m"
+    exit 1
+fi
+
+echo -e "\\n\033[0;32m=====> DEVENV - STEP A.1: uv installed successfully.\033[0m"
+
+# ===> A.2. Installation of Miniconda via dedicated install script
+echo -e "\033[0;35m=====> DEVENV - STEP A.2: Installing Miniconda via dedicated install script...\033[0m\\n"
+
+if [[ "$OSTYPE" == darwin* ]]; then
+    MINICONDA_PLATFORM_SUFFIX="MacOSX-arm64"
+else
+    MINICONDA_PLATFORM_SUFFIX="Linux-x86_64"
+fi
+
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-$MINICONDA_PLATFORM_SUFFIX.sh
+if [[ -d "$HOME/.miniconda" ]] || [[ -L "$HOME/.miniconda" ]] ; then
+    bash ./Miniconda3-latest-$MINICONDA_PLATFORM_SUFFIX.sh -u -b -p $HOME/.miniconda
+else
+    bash ./Miniconda3-latest-$MINICONDA_PLATFORM_SUFFIX.sh -b -p $HOME/.miniconda
+fi
+rm ./Miniconda3-latest-$MINICONDA_PLATFORM_SUFFIX.sh
+
+# Setup link for common miniconda directory across platforms
+if [[ ! -d "$HOME/.miniconda" ]] && [[ -d "$HOME/miniconda3" ]]; then
+    ln -s "$HOME/miniconda3" "$HOME/.miniconda"
+fi
+
+# Try initializing miniconda
+__conda_setup="$('$HOME/.miniconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$HOME/.miniconda/etc/profile.d/conda.sh" ]; then
+        . "$HOME/.miniconda/etc/profile.d/conda.sh"
+    else
+        export PATH="$HOME/.miniconda/bin:$PATH"
+    fi
+fi
+eval "$(conda shell.zsh hook)"
+unset __conda_setup
+
+# Verify conda installation
+if ! type conda &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: conda is not installed. Aborting.\033[0m"
+    exit 1
+fi
+
+echo -e "\\n\033[0;32m=====> DEVENV - STEP A.2: conda installed successfully.\033[0m"
+
+# ===> A.3. Installation of Ruff using uv tool
+echo -e "\\n\033[0;35m=====> DEVENV - STEP A.3: Installing Ruff via uv tool...\033[0m"
+
+uv tool install ruff
+
+# Verify Ruff installation
+if ! type ruff &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: Ruff is not installed. Aborting.\033[0m"
+    exit 1
+fi
+
+echo -e "\\n\033[0;32m=====> DEVENV - STEP A.3: Ruff installed successfully.\033[0m"
+
+# ===> A.4. Installation of MyPy using uv tool
+echo -e "\\n\033[0;35m=====> DEVENV - STEP A.4: Installing MyPy via uv tool...\033[0m"
+
+uv tool install mypy
+
+# Verify MyPy installation
+if ! type mypy &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: MyPy is not installed. Aborting.\033[0m"
+    exit 1
+fi
+
+echo -e "\\n\033[0;32m=====> DEVENV - STEP A.4: MyPy installed successfully.\033[0m"
+
+# ===> A.5. Installation of pre-commit using uv tool
+echo -e "\\n\033[0;35m=====> DEVENV - STEP A.5: Installing pre-commit via uv tool...\033[0m"
+
+uv tool install pre-commit
+
+# Verify pre-commit installation
+if ! type pre-commit &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: pre-commit is not installed. Aborting.\033[0m"
+    exit 1
+fi
+
+echo -e "\\n\033[0;32m=====> DEVENV - STEP A.5: pre-commit installed successfully.\033[0m"
+
+# ===> A.6. Installation of pdoc using uv tool
+echo -e "\\n\033[0;35m=====> DEVENV - STEP A.6: Installing pdoc via uv tool...\033[0m"
+
+uv tool install pdoc
+
+# Verify pdoc installation
+if ! type pdoc &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: pdoc is not installed. Aborting.\033[0m"
+    exit 1
+fi
+
+echo -e "\\n\033[0;32m=====> DEVENV - STEP A.6: pdoc installed successfully.\033[0m"
+
+
+# ===> A.7. Installation of Jupyter Lab using uv tool
+echo -e "\\n\033[0;35m=====> DEVENV - STEP A.7: Installing Jupyter Lab via uv tool...\033[0m"
+
+uv tool install jupyterlab
+
+# Verify Jupyter Lab installation
+if ! type jupyter-lab &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: Jupyter Lab is not installed. Aborting.\033[0m"
+    exit 1
+fi
+
+echo -e "\\n\033[0;32m=====> DEVENV - STEP A.7: Jupyter Lab installed successfully.\033[0m"
+
+echo -e "\\n\033[0;35m===> DEVENV - STEP A: Python development environment setup successfully completed.\033[0m"

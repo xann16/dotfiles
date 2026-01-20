@@ -97,14 +97,14 @@ GIT_DST="$XDG_CONFIG_HOME/git"
 if [ -d "$GIT_DST" ]; then
     if [ ! -L "$GIT_DST" ]; then
         mv "$GIT_DST" "$GIT_BCK" -f
-        echo "=====> Moved directory to backup: $GIT_DST -> $GIT_BCK"
+        echo -e "=====> Moved directory to backup: $GIT_DST -> $GIT_BCK"
     fi
 fi
 
 # If symlink does not exist, create it
 if [ ! -L "$GIT_DST" ]; then
     ln -s "$GIT_SRC" "$GIT_DST"
-    echo "=====> Created symlink (git config): $GIT_DST -> $GIT_SRC"
+    echo -e "=====> Created symlink (git config): $GIT_DST -> $GIT_SRC"
 fi
 
 # Verify config
@@ -140,7 +140,7 @@ fi
 # If symlink does not exist, create it
 if [ ! -L "$SCRIPT_DST" ]; then
     ln -s "$SCRIPT_SRC" "$SCRIPT_DST"
-    echo "=====> Created symlink (custom scripts): $SCRIPT_DST -> $SCRIPT_SRC"
+    echo -e "=====> Created symlink (custom scripts): $SCRIPT_DST -> $SCRIPT_SRC"
 fi
 
 echo -e "\033[0;32m=====> STEP 2.3: Custom scripts directory linked successfully.\033[0m"
@@ -203,7 +203,7 @@ if [[ "$OSTYPE" != darwin* ]]; then
 
     # Copy the wallpaper image to the destination
     yes | cp "$IMG_SRC" "$IMG_DST"
-    echo "=====> Copied wallpaper: $IMG_SRC -> $IMG_DST"
+    echo -e "=====> Copied wallpaper: $IMG_SRC -> $IMG_DST"
 
     # Verify if the wallpaper was copied successfully
     if [ ! -f "$IMG_DST" ]; then
@@ -275,14 +275,14 @@ else
     if [ -d "$I3_DST" ]; then
         if [ ! -L "$I3_DST" ]; then
             mv "$I3_DST" "$I3_BCK" -f
-            echo "=====> Moved directory to backup: $I3_DST -> $I3_BCK"
+            echo -e "=====> Moved directory to backup: $I3_DST -> $I3_BCK"
         fi
     fi
 
     # If symlink does not exist, create it
     if [ ! -L "$I3_DST" ]; then
         ln -s "$I3_SRC" "$I3_DST"
-        echo "=====> Created symlink (i3 config): $I3_DST -> $I3_SRC"
+        echo -e "=====> Created symlink (i3 config): $I3_DST -> $I3_SRC"
     fi
 
     echo -e "\033[0;32m=====> STEP 3.3: i3 configuration set up successfully.\033[0m"
@@ -297,13 +297,13 @@ else
     if [ -d "$PICOM_DST" ]; then
         if [ ! -L "$PICOM_DST" ]; then
             mv "$PICOM_DST" "$PICOM_BCK" -f
-            echo "=====> Moved directory to backup: $PICOM_DST -> $PICOM_BCK"
+            echo -e "=====> Moved directory to backup: $PICOM_DST -> $PICOM_BCK"
         fi
     fi
 
     if [ ! -L "$PICOM_DST" ]; then
         ln -s "$PICOM_SRC" "$PICOM_DST"
-        echo "Created symlink (Picom config): $PICOM_DST -> $PICOM_SRC"
+        echo -e "Created symlink (Picom config): $PICOM_DST -> $PICOM_SRC"
     fi
 
     echo -e "\033[0;32m=====> STEP 3.4: Picom configuration set up successfully.\033[0m"
@@ -347,14 +347,14 @@ KITTY_DST="$XDG_CONFIG_HOME/kitty"
 if [ -d "$KITTY_DST" ]; then
   if [ ! -L "$KITTY_DST" ]; then
     mv "$KITTY_DST" "$KITTY_BCK"
-    echo "=====> Moved file to backup: $KITTY_DST -> $KITTY_BCK"
+    echo -e "=====> Moved file to backup: $KITTY_DST -> $KITTY_BCK"
   fi
 fi
 
 # If symlink does not exist, create it
 if [ ! -L "$KITTY_DST" ]; then
   ln -s "$KITTY_SRC" "$KITTY_DST"
-  echo "=====> Created symlink (kitty config): $KITTY_DST -> $KITTY_SRC"
+  echo -e "=====> Created symlink (kitty config): $KITTY_DST -> $KITTY_SRC"
 fi
 
 echo -e "\033[0;32m=====> STEP 4.2: Kitty configuration set up successfully.\033[0m"
@@ -395,7 +395,7 @@ TMUX_DST="$XDG_CONFIG_HOME/tmux"
 if [ -d "$TMUX_DST" ]; then
   if [ ! -L "$TMUX_DST" ]; then
     mv "$TMUX_DST" "$TMUX_BCK" -f
-    echo "=====> Moved directory to backup: $TMUX_DST -> $TMUX_BCK"
+    echo -e "=====> Moved directory to backup: $TMUX_DST -> $TMUX_BCK"
   fi
 fi
 
@@ -467,14 +467,14 @@ if [ -f "$ZSHRC_DST" ]; then
   if [ ! -L "$ZSHRC_DST" ]; then
     mkdir -p "$BCK_ROOT/zsh"
     mv "$ZSHRC_DST" "$ZSHRC_BCK" -f
-    echo "=====> Moved file to backup: $ZSHRC_DST -> $ZSHRC_BCK"
+    echo -e "=====> Moved file to backup: $ZSHRC_DST -> $ZSHRC_BCK"
   fi
 fi
 
 # If symlink does not exist, create it
 if [ ! -L "$ZSHRC_DST" ]; then
   ln -s "$ZSHRC_SRC" "$ZSHRC_DST"
-  echo "===== >Created symlink (zsh config file): $ZSHRC_DST -> $ZSHRC_SRC"
+  echo -e "=====> Created symlink (zsh config file): $ZSHRC_DST -> $ZSHRC_SRC"
 fi
 
 ZSH_SRC="$SOURCE_ROOT/zsh"
@@ -485,14 +485,14 @@ ZSH_DST="$XDG_CONFIG_HOME/zsh"
 if [ -d "$ZSH_DST" ]; then
   if [ ! -L "$ZSH_DST" ]; then
     mv "$ZSH_DST" "$ZSH_BCK" -f
-    echo "=====> Moved directory to backup: $ZSH_DST -> $ZSH_BCK"
+    echo -e "=====> Moved directory to backup: $ZSH_DST -> $ZSH_BCK"
   fi
 fi
 
 # If symlink does not exist, create it
 if [ ! -L "$ZSH_DST" ]; then
   ln -s "$ZSH_SRC" "$ZSH_DST"
-  echo "=====> Created symlink (zsh config directory): $ZSH_DST -> $ZSH_SRC"
+  echo -e "=====> Created symlink (zsh config directory): $ZSH_DST -> $ZSH_SRC"
 fi
 
 echo -e "\033[0;32m=====> STEP 6.2: Zsh configuration set up successfully.\033[0m"
@@ -502,16 +502,16 @@ echo -e "\033[0;35m=====> STEP 6.3: Setting Zsh as the default shell...\033[0m"
 
 # Add Zsh to the list of allowed shells if not already present
 if ! grep -q "$(which zsh)" /etc/shells; then
-    echo "$(which zsh)" | sudo tee -a /etc/shells > /dev/null
+    echo -e "$(which zsh)" | sudo tee -a /etc/shells > /dev/null
 fi
 
 if [ "$SHELL" != "$(which zsh)" ]; then
     chsh -s "$(which zsh)"
-    echo "=====> Changed default shell to Zsh."
+    echo -e "=====> Changed default shell to Zsh."
     sudo chsh -s "$(which zsh)"
-    echo "=====> Changed root shell to Zsh."
+    echo -e "=====> Changed root shell to Zsh."
 else
-    echo "=====> Zsh is already the default shell."
+    echo -e "=====> Zsh is already the default shell."
 fi
 
 echo -e "\033[0;32m=====> STEP 6.3: Zsh set as the default shell successfully.\033[0m"
@@ -722,16 +722,24 @@ NVIM_DST="$XDG_CONFIG_HOME/nvim"
 if [ -d "$NVIM_DST" ]; then
   if [ ! -L "$NVIM_DST" ]; then
     mv "$NVIM_DST" "$NVIM_BCK" -f
-    echo "=====> Moved directory to backup: $NVIM_DST -> $NVIM_BCK"
+    echo -e "=====> Moved directory to backup: $NVIM_DST -> $NVIM_BCK"
   fi
 fi
 
 # If symlink does not exist, create it
 if [ ! -L "$NVIM_DST" ]; then
   ln -s "$NVIM_SRC" "$NVIM_DST"
-  echo "=====> Created symlink (nvim config): $NVIM_DST -> $NVIM_SRC"
+  echo -e "=====> Created symlink (nvim config): $NVIM_DST -> $NVIM_SRC"
 fi
 
-#echo -e "\033[0;32m=====> STEP 8.3: Neovim configuration set up successfully.\033[0m"
+echo -e "\033[0;32m=====> STEP 8.3: Neovim configuration set up successfully.\033[0m"
 
 echo -e "\033[0;32m===> STEP 8: Editor (Neovim) set up successfully.\033[0m"
+
+
+# =================================================== #
+# ===== SETUP SPECIFIC DEVELOPMENT ENVIRONMENTS ===== #
+# =================================================== #
+
+# 1. Python
+bash "$SOURCE_ROOT/devenv/setup-python"
