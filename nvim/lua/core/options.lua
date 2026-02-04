@@ -1,6 +1,6 @@
 -- gutter setup
 vim.o.number = true                         -- use line numbers
--- vim.o.relativenumber = true              -- use relative line numbers
+vim.o.relativenumber = true                 -- use relative line numbers
 vim.o.signcolumn = 'yes'                    -- always keep signcolumn on
 
 -- current line and position tracking and highlights
@@ -44,7 +44,7 @@ vim.o.splitbelow = true                     -- configure new splits to open belo
 vim.o.mouse = 'a'                           -- enable mouse support ('a' - in all modes)
 vim.o.confirm = true                        -- confirm dialog, for operations that would otherwise fail due to unsaved changes
 vim.o.showmode = false                      -- do not show mode (it is included in status bar)
-vim.opt.shortmess:append('S')                 -- suppress displaying search count (it is included in status bar)
+vim.opt.shortmess:append('S')               -- suppress displaying search count (it is included in status bar)
 vim.o.termguicolors = true                  -- enable 24-bit RGB color support
 
 -- clipboard mode - sync system and Neovim clipboard

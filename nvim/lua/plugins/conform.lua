@@ -34,6 +34,12 @@ return {
                 -- TODO: c = { "clang-format" },
                 -- TODO: cpp = { "clang-format" },
                 -- TODO: fortran = { "clang-format" }, (???)
+                -- TODO: javascript = { "prettier" },
+                -- TODO: css = { "prettier" },
+                -- TODO: html = { "prettier" },
+                -- TODO: json = { "prettier" },
+                -- TODO: yaml = { "prettier" },
+                -- TODO: markdown = { "prettier" },
             },
         },
     },

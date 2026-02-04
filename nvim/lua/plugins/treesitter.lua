@@ -14,6 +14,7 @@ return {
                     'fortran',
                     'diff',
                     'html',
+                    'css',
                     'lua',
                     'luadoc',
                     'markdown',
@@ -27,7 +28,8 @@ return {
                     'json',
                     'yaml',
                     'protobuf',
-                    'gitignore'
+                    'gitignore',
+                    'dockerfile'
                 },
                 auto_install = true,
                 highlight = {
@@ -41,7 +43,18 @@ return {
                     enable = true,
                     disable = { 'ruby' } 
                 },
+                incremental_selection = {
+                    enable = true,
+                    keymaps = {
+                        init_selection = "<C-space>",
+                        node_incremental = "<C-space>",
+                        scope_incremental = false,
+                        node_decremental = "<bs>",
+                    },
+                },
             }
+
+            vim.treesitter.language.register("bash", "zsh") -- use bash parser for zsh config
 
             -- TODO: There are additional nvim-treesitter modules that you can use to interact
             --         with nvim-treesitter. You should go explore a few and see what interests you:

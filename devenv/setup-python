@@ -11,6 +11,12 @@
 #      -> 'pdoc' - documentation generator (for local testing)
 #      -> 'jupyterlab' - interactive development environment for Jupyter notebooks
 
+# Requirements (if being run on its own):
+#   - wget
+#   - curl (Ubuntu only)
+#   - brew (MacOS only)
+#   - (optional) in some cases manual installation of python and pip might be necessary
+
 # ================================================ #
 # = A = SETUP PYTHON DEVELOPMENT ENVIRONMENT ===== #
 # ================================================ #

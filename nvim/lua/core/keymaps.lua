@@ -21,6 +21,9 @@ vim.keymap.set('n', '<leader>j', '<cmd>lprev<CR>zz', { desc = 'Go to [K]-previou
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move selected lines down' })
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move selected lines up' })
 
+-- let join line upwards (J) prdeserve cursor position below
+vim.keymap.set('n', 'J', "mzJ`z", { desc = 'Join line upwards' })
+
 -- move up or down through the buffer with cursor centered
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Move down a half page with cursor centered' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Move up a half page with cursor centered' })
@@ -37,6 +40,9 @@ vim.keymap.set('v', '>', '>gv', opts)
 vim.keymap.set('n', '<leader>d', '"_d', { desc = 'Delete without yanking' })
 vim.keymap.set('n', 'x', '"_x', opts)
 
+-- preserve clipboard when replacing visual selection
+vim.keymap.set('v', '<leader>p', '"_dP', opts)
+
 -- disable mapping for internal nvim terminal
 vim.keymap.set('n', 'Q', '<nop>')
 
@@ -47,12 +53,7 @@ vim.keymap.set('n', '<C-w>q', '<cmd>close<CR>', { desc = 'Close split window' })
 vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
     { desc = "Replace word cursor is on globally" })
 
-
-
-
-
-
-
+    
 -- copy current filepath (relative to the home directory) to the clipboard 
 vim.keymap.set("n", "<leader>fp", function()
   local filePath = vim.fn.expand("%:~")
