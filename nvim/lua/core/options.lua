@@ -7,8 +7,12 @@ vim.o.signcolumn = 'yes'                    -- always keep signcolumn on
 vim.o.guicursor = ''                        -- set the GUI cursor shape to full block
 vim.o.cursorline = true                     -- highlight the current line
 vim.o.scrolloff = 8                         -- set minimal number of screen lines to keep above and below the cursor
+vim.o.sidescrolloff = 8                     -- set minimal number of screen columns to keep to the left and right of the cursor
 
 -- indents, tabs
+vim.o.tabstop = 4                           -- set tab width to 4 spaces
+vim.o.softtabstop = 4                       -- set soft tab width to 4 spaces
+vim.o.shiftwidth = 4                        -- set indentation width to 4 spaces
 vim.o.expandtab = true                      -- replace Tabs with Spaces
 vim.o.autoindent = true                     -- enable automatic indentation
 vim.o.smartindent = true                    -- enable smart indentation
