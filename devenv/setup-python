@@ -124,17 +124,17 @@ fi
 echo -e "\\n\033[0;32m=====> DEVENV - STEP A.5: pre-commit installed successfully.\033[0m"
 
 # ===> A.6. Installation of pdoc using uv tool
-echo -e "\\n\033[0;35m=====> DEVENV - STEP A.6: Installing pdoc via uv tool...\033[0m"
+echo -e "\\n\033[0;35m=====> DEVENV - STEP A.6: Installing sphinx via uv tool...\033[0m"
 
-uv tool install pdoc
+uv tool install sphinx
 
-# Verify pdoc installation
-if ! type pdoc &>/dev/null; then
-    echo -e "\\n\033[0;31m=====> ERROR: pdoc is not installed. Aborting.\033[0m"
+# Verify sphinx installation
+if ! type sphinx-build &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: sphinx is not installed. Aborting.\033[0m"
     exit 1
 fi
 
-echo -e "\\n\033[0;32m=====> DEVENV - STEP A.6: pdoc installed successfully.\033[0m"
+echo -e "\\n\033[0;32m=====> DEVENV - STEP A.6: sphinx installed successfully.\033[0m"
 
 
 # ===> A.7. Installation of Jupyter Lab using uv tool
