@@ -539,11 +539,11 @@ echo -e "\\n\033[0;35m===> STEP 7: Installing extra CLI tools...\033[0m"
 # ===> 7.1. Installation of extra CLI tools via Homebrew or APT
 if [[ "$OSTYPE" == darwin* ]]; then
     echo -e "\033[0;35m=====> STEP 7.1: Installing extra CLI tools via Homebrew...\033[0m\\n"
-    brew install bat ripgrep gh tealdeer eza git-delta
+    brew install bat ripgrep gh tealdeer eza git-delta btop
     BAT_CMD_NAME=bat
 else
     echo -e "\033[0;35m=====> STEP 7.1: Installing extra CLI tools via APT...\033[0m\\n"
-    sudo apt install bat ripgrep gh tldr -y
+    sudo apt install bat ripgrep gh tldr btop -y
     BAT_CMD_NAME=batcat
 fi
 
@@ -559,6 +559,9 @@ elif ! type gh &>/dev/null; then
     exit 1
 elif ! type tldr &>/dev/null; then
     echo -e "\\n\033[0;31m=====> ERROR: Tldr is not installed. Aborting.\033[0m"
+    exit 1
+elif ! type btop &>/dev/null; then
+    echo -e "\\n\033[0;31m=====> ERROR: Btop++ is not installed. Aborting.\033[0m"
     exit 1
 fi
 

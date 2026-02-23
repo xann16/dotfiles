@@ -48,6 +48,8 @@ alias gl='git log --oneline --decorate'
 alias gg='git log --oneline --graph --decorate --all'
 alias gls='git log --stat'
 alias gll='git log'
+alias gdlt="git diff \$(gh release list --limit 1 --json tagName -q '.[0].tagName')..HEAD"
+alias gllt="git log \$(gh release list --limit 1 --json tagName -q '.[0].tagName')..HEAD --oneline --decorate"
 
 
 # GLOBAL ALIASES
