@@ -54,9 +54,9 @@ return {
                 preset = 'luasnip'
             },
             fuzzy = { 
-                -- TODO: Consider using the rust implementation via `'prefer_rust_with_warning'`
-                --         See :h blink-cmp-config-fuzzy for more information
-                implementation = 'lua'
+                -- set to use pre-built fuzzer binaries if possible 
+                --   (otherwise fallback to lua and emit warning)
+                implementation = 'prefer_rust_with_warning'
             },
             signature = {
                 -- Shows a signature help window while you type arguments for a function

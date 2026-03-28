@@ -36,8 +36,9 @@ return {
                     map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
 
                     -- Jump to the definition of the word under your cursor (to jump back, press <C-t>).
-                    map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
                     map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+                    map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+                    map('gsd', function() require('telescope.builtin').lsp_definitions( { jump_type="split"} ) end, '[G]oto [D]efinition (in a new split)')
 
                     -- Jump to the declaration of the word under your cursor (e.g. in C/C++ go to header).
                     map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')

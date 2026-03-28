@@ -21,12 +21,14 @@ return {
         opts = {
             notify_on_error = false,
             format_on_save = function(bufnr)
-                local disable_filetypes = {} -- TODO: Consider { c = true, cpp = true }
+                -- if any languages / file types are to be excluded from
+                --    auto-formatting on save, include them here
+                local disable_filetypes = {} 
                 if disable_filetypes[vim.bo[bufnr].filetype] then
                     return nil
-                else
-                    return { timeout_ms = 1000, lsp_format = 'fallback' }
                 end
+
+                return { timeout_ms = 1000, lsp_format = 'fallback' }
             end,
             formatters_by_ft = {
                 lua = { 'stylua' },

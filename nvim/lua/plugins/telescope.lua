@@ -37,7 +37,8 @@ return {
 					    i = {
 						    ["<C-k>"] = require("telescope.actions").move_selection_previous,
 						    ["<C-j>"] = require("telescope.actions").move_selection_next,
-                            ["<C-q>"] = require("telescope.actions").send_selected_to_qflist + custom_actions.open_trouble_qflist,
+                            ["<C-q>"] = require("telescope.actions").send_to_qflist + custom_actions.open_trouble_qflist,
+                            ["<M-q>"] = require("telescope.actions").send_selected_to_qflist + custom_actions.open_trouble_qflist,
                             ["<C-t>"] = require("trouble.sources.telescope").open,
 					    },
 				    },
@@ -67,7 +68,8 @@ return {
             vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
             vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
             vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-            vim.keymap.set("n", "<leader>st", "<cmd>TodoTelescope<cr>", { desc = "Find todos" })
+            vim.keymap.set("n", "<leader>st", "<cmd>TodoTelescope keywords=TODO<cr>", { desc = "Find TODO tags" })
+            vim.keymap.set("n", "<leader>s:", "<cmd>TodoTelescope<cr>", { desc = "Find all todo-comment tags" })
             
             vim.keymap.set('n', '<leader>s/', function()
                 builtin.live_grep({ grep_open_files = true, prompt_title = 'Live Grep in Open Files' })

@@ -11,24 +11,13 @@ return {
 		    local todo_comments = require("todo-comments")
 
 		    todo_comments.setup({
-			    -- TODO: Configure custom keywords, highlights and icons
-                --[[
                 keywords = {
-				    FIX = {
-					    icon = " ", -- icon used for the sign, and in search results
-					    color = "error", -- can be a hex color, or a named color (see below)
-					    alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
-					    -- signs = false, -- configure signs for some keywords individually
-				    },
-				    TODO = { icon = " ", color = "info" , alt = {"Personal"} },
-				    HACK = { icon = " ", color = "warning", alt = { "DON SKIP" } },
-				    WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
-				    PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-				    NOTE = { icon = " ", color = "hint", alt = { "INFO", "READ", "COLORS", "Custom" } },
-				    TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
-				    FORGETNOT = { icon = " ", color = "hint" },
+				    FIX = { icon = " ", color = "error", alt = { "FIXME", "BUG", "FIXIT", "ISSUE", "ERROR" } },
+				    TODO = { icon = " ", color = "info" , alt = { "TASK" } },
+				    WARN = { icon = " ", color = "warning", alt = { "WARNING" } },
+				    PERF = { icon = " ", color = "#aa77cc", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+				    NOTE = { icon = " ", color = "hint", alt = { "INFO", "COLORS", "READ", "DOI", "SEE" } },
 			    },
-                --]]
                 highlight = {
                     multiline = true,
                     multiline_pattern = "^.",
@@ -41,7 +30,7 @@ return {
                         [[<!--\s*(KEYWORDS)\s*:.*-->]], -- HTML comments with colon
                         [[<!--\s*(KEYWORDS)\s*.*-->]], -- HTML comments without colon
                     },
-                    comments_only = false, -- highlighting outside of comments
+                    comments_only = true, -- highlighting outside of comments
                 },
                 search = {
                     command = "rg",
@@ -52,7 +41,7 @@ return {
                         "--line-number",
                         "--column",
                     },
-                    pattern = [[\b(KEYWORDS)\b]],
+                    pattern = [[\b(KEYWORDS):]],
                 },
 		    })
 
