@@ -43,26 +43,37 @@ return {
                     enable = true,
                     disable = { 'ruby' } 
                 },
-                incremental_selection = {
-                    enable = true,
-                    keymaps = {
-                        init_selection = "<C-space>",
-                        node_incremental = "<C-space>",
-                        scope_incremental = false,
-                        node_decremental = "<bs>",
-                    },
-                },
             }
 
             vim.treesitter.language.register("bash", "zsh") -- use bash parser for zsh config
-
-            -- TODO: There are additional nvim-treesitter modules that you can use to interact
-            --         with nvim-treesitter. You should go explore a few and see what interests you:
-            --
-            --          - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-            --          - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-            --          - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-        
         end 
+    },
+    {
+        'MeanderingProgrammer/treesitter-modules.nvim',
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = { 'nvim-treesitter/nvim-treesitter' },
+        opts = {
+            incremental_selection = {
+                enable = true,
+                keymaps = {
+                    init_selection = "<C-.>",
+                    node_incremental = "<C-.>",
+                    scope_incremental = false,
+                    node_decremental = "<C-,>",
+                },
+            },
+        },
+    },
+    {
+        'nvim-treesitter/nvim-treesitter-context',
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = { 'nvim-treesitter/nvim-treesitter' },
+        config = function()
+            require("treesitter-context").setup {}
+
+            vim.keymap.set("n", "[c", function()
+                require("treesitter-context").go_to_context(vim.v.count1)
+            end, { silent = true })
+        end
     },
 }
